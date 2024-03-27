@@ -8,7 +8,7 @@ const Header = () => {
   const isDesktop = useMediaQuery({ query: "(min-width: 820px)" });
 
   return (
-    <header className="flex flex-col">
+    <header className="fixed w-full backdrop-blur-md flex flex-col">
       {isDesktop ? <Navbar /> : <NavSheet />}
       <Separator />
     </header>

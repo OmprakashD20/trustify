@@ -4,7 +4,7 @@ import Home from "@/pages/Home/Home";
 
 const App = () => {
   return (
-    <div className="fixed dark:bg-black h-[100dvh] w-screen font-poppins">
+    <div className="dark:bg-black h-full font-poppins">
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

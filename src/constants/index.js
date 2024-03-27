@@ -6,8 +6,9 @@ import {
 } from "lucide-react";
 
 import Logo from "@/assets/logo.svg";
+import Trustify from "@/assets/hero.png";
 
-export { Logo };
+export { Logo, Trustify };
 
 export const navItems = [
   {
@@ -19,19 +20,19 @@ export const navItems = [
   {
     id: 2,
     title: "About",
-    path: "/about",
+    path: "#",
     icon: LucideInfo,
   },
   {
     id: 3,
     title: "Services",
-    path: "/services",
+    path: "#",
     icon: LucideWallet,
   },
   {
     id: 4,
     title: "Contact",
-    path: "/contact",
+    path: "#",
     icon: LucideContact,
   },
 ];

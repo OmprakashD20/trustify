@@ -22,7 +22,7 @@ const Navbar = () => {
         </p>
       </div>
       <div className="flex items-center gap-x-2">
-        <div className="flex gap-x-2 items-center border-2 border-neutral-950 dark:border-indigo-500 rounded-md divide-x divide-neutral-950 dark:divide-indigo-400/80">
+        <div className="flex gap-x-2 items-center border border-neutral-950 dark:border-indigo-500 rounded-md divide-x divide-neutral-950 dark:divide-indigo-400/80 dark:bg-[#030303] bg-neutral-50 py-0.5">
           {navItems.map((item, index) => (
             <Link
               to={item.path}

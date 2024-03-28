@@ -23,14 +23,14 @@ const Hero = () => {
             <a
               rel="noopener noreferrer"
               href="#"
-              className="px-8 py-3 text-lg font-medium sm:uppercase rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600"
+              className="px-8 py-3 text-lg font-medium sm:uppercase rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300"
             >
               Issue Certificates
             </a>
             <a
               rel="noopener noreferrer"
               href="#"
-              className="px-8 py-3 text-lg font-medium sm:uppercase rounded dark:border-gray-800 border-2"
+              className="px-8 py-3 text-lg font-medium sm:uppercase rounded dark:border-gray-800 border-2 border-black/20 dark:hover:bg-neutral-900/70 transition-colors duration-300"
             >
               Verify
             </a>

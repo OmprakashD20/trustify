@@ -8,7 +8,12 @@ import {
 import Logo from "@/assets/logo.svg";
 import Trustify from "@/assets/hero.png";
 
-export { Logo, Trustify };
+import Feature1 from "@/assets/feature1.webp";
+import Feature2 from "@/assets/feature2.webp";
+import Feature3 from "@/assets/feature3.webp";
+import Feature4 from "@/assets/feature4.webp";
+
+export { Logo, Trustify, Feature1, Feature2, Feature3, Feature4 };
 
 export const navItems = [
   {

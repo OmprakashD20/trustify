@@ -12,6 +12,9 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        xs: "420px",
+      },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         spaceGrotesk: ["Space Grotesk", "sans-serif"]

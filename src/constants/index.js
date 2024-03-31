@@ -13,6 +13,10 @@ import Feature2 from "@/assets/feature2.webp";
 import Feature3 from "@/assets/feature3.webp";
 import Feature4 from "@/assets/feature4.webp";
 
+import Student from "@/assets/student.jpg";
+import Institution from "@/assets/institution.jpg";
+import Admin from "@/assets/admin.jpg";
+
 export { Logo, Trustify, Feature1, Feature2, Feature3, Feature4 };
 
 export const navItems = [
@@ -39,5 +43,29 @@ export const navItems = [
     title: "Contact",
     path: "/#contact",
     icon: LucideContact,
+  },
+];
+
+export const loginOptions = [
+  {
+    id: 1,
+    title: "Student Login",
+    desc: "View your certificates",
+    image: Student,
+    path: "/login/student",
+  },
+  {
+    id: 2,
+    title: "Institution Login",
+    desc: "Issue certificates",
+    image: Institution,
+    path: "/login/institution",
+  },
+  {
+    id: 3,
+    title: "Admin Login",
+    desc: "Manage the platform",
+    image: Admin,
+    path: "/login/admin",
   },
 ];

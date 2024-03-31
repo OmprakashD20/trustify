@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 
 import { Logo, navItems } from "@/constants";
 import ThemeSwitcher from "./ThemeSwitcher";
@@ -24,7 +24,8 @@ const Navbar = () => {
       <div className="flex items-center gap-x-2">
         <div className="flex gap-x-2 items-center border border-neutral-950 dark:border-indigo-500 rounded-md divide-x divide-neutral-950 dark:divide-indigo-400/80 dark:bg-[#030303] bg-neutral-50 py-0.5">
           {navItems.map((item, index) => (
-            <Link
+            <HashLink
+              smooth
               to={item.path}
               key={item.title}
               className={cn(
@@ -35,7 +36,7 @@ const Navbar = () => {
               )}
             >
               {item.title}
-            </Link>
+            </HashLink>
           ))}
         </div>
         <ThemeSwitcher />

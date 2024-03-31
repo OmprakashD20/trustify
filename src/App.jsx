@@ -4,7 +4,7 @@ import Home from "@/pages/Home/Home";
 
 const App = () => {
   return (
-    <div className="dark:bg-black h-full font-poppins">
+    <div className="dark:bg-black h-full font-spaceGrotesk">
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

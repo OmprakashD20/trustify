@@ -14,6 +14,7 @@ module.exports = {
     extend: {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
+        spaceGrotesk: ["Space Grotesk", "sans-serif"]
       },
       keyframes: {
         "accordion-down": {

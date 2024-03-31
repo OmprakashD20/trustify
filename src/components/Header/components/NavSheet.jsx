@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 import { useMediaQuery } from "react-responsive";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { LucideChevronRight, Paintbrush } from "lucide-react";
@@ -63,8 +63,8 @@ const NavSheet = () => {
         <SheetTrigger>
           <HamburgerMenuIcon className="text-indigo-500 dark:text-indigo-500 size-10 p-2 rounded-md border dark:border-neutral-800" />
         </SheetTrigger>
-        <SheetContent className="p-0 flex flex-col gap-y-0">
-          <SheetHeader className="px-2 py-2 font-poppins">
+        <SheetContent side="top" className="h-1/2 p-0 flex flex-col gap-y-0">
+          <SheetHeader className="px-2 py-2 font-spaceGrotesk">
             <SheetTitle>
               <div className="flex gap-x-2 items-center">
                 <img src={Logo} alt="Trustify Logo" className="size-9" />
@@ -87,16 +87,17 @@ const NavSheet = () => {
                         "bg-indigo-500/65 dark:bg-white/10 text-neutral-100"
                     )}
                   >
-                    <Link
+                    <HashLink
+                      smooth
                       to={item.path}
-                      className="group flex items-center justify-between py-1 pr-2 hover:text-neutral-100 font-poppins"
+                      className="group flex items-center justify-between py-1 pr-2 hover:text-neutral-100 font-spaceGrotesk"
                     >
                       <div className="group flex gap-x-2 justify-center items-center px-3 py-1 lg:px-4 xl:px-5 xl:py-1.5">
                         <item.icon />
                         <span>{item.title}</span>
                       </div>
                       <LucideChevronRight className="-translate-x-4 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100" />
-                    </Link>
+                    </HashLink>
                   </li>
                 );
               })}
@@ -104,7 +105,7 @@ const NavSheet = () => {
             <Separator />
           </SheetDescription>
           <SheetFooter>
-            <span className="text-center text-neutral-500 dark:text-neutral-500 font-poppins text-xs">
+            <span className="text-center text-neutral-500 dark:text-neutral-500 font-spaceGrotesk text-xs">
               Trustify &copy; {new Date().getFullYear()}
             </span>
           </SheetFooter>

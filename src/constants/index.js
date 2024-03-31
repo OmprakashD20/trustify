@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 import Logo from "@/assets/logo.svg";
-import Trustify from "@/assets/hero.png";
+import Trustify from "@/assets/hero.webp";
 
 import Feature1 from "@/assets/feature1.webp";
 import Feature2 from "@/assets/feature2.webp";
@@ -19,25 +19,25 @@ export const navItems = [
   {
     id: 1,
     title: "Home",
-    path: "/",
+    path: "/#top",
     icon: LucideHome,
   },
   {
     id: 2,
     title: "About",
-    path: "#",
+    path: "/#about",
     icon: LucideInfo,
   },
   {
     id: 3,
-    title: "Services",
-    path: "#",
+    title: "Features",
+    path: "/#features",
     icon: LucideWallet,
   },
   {
     id: 4,
     title: "Contact",
-    path: "#",
+    path: "/#contact",
     icon: LucideContact,
   },
 ];

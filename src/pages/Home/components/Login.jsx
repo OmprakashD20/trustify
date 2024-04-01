@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 
 import { loginOptions } from "@/constants";
 
 const Login = () => {
+  const navigate = useNavigate();
   return (
     <div className="my-20 flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-y-6 sm:gap-y-0 sm:gap-x-14">
       {loginOptions.map((option) => (
@@ -31,6 +34,7 @@ const Login = () => {
             <CardItem
               translateZ="20"
               as="button"
+              onClick={() => navigate(option.path)}
               className="mt-2 mb-4 px-4 py-2 rounded-xl dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300 text-sm font-bold w-full"
             >
               Login as {option.title.substring(0, option.title.indexOf(" "))}

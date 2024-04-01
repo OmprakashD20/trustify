@@ -46,7 +46,11 @@ const NavSheet = () => {
       {isMobile && (
         <Popover>
           <PopoverTrigger asChild>
-            <Button size={"icon"} variant={"outline"} className="mr-4">
+            <Button
+              size={"icon"}
+              variant={"outline"}
+              className="mr-4 !bg-transparent"
+            >
               <Paintbrush
                 height={20}
                 width={20}

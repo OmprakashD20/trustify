@@ -1,19 +1,15 @@
 import React, {
-    createContext,
-    useState,
-    useContext,
-    useRef,
-    useEffect,
+  createContext,
+  useState,
+  useContext,
+  useRef,
+  useEffect,
 } from "react";
 import { cn } from "@/utils/utils";
 
 const MouseEnterContext = createContext(undefined);
 
-export const CardContainer = ({
-  children,
-  className,
-  containerClassName,
-}) => {
+export const CardContainer = ({ children, className, containerClassName }) => {
   const containerRef = useRef(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
 
@@ -67,10 +63,7 @@ export const CardContainer = ({
   );
 };
 
-export const CardBody = ({
-  children,
-  className,
-}) => {
+export const CardBody = ({ children, className }) => {
   return (
     <div
       className={cn(

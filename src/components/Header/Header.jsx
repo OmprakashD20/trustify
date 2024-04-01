@@ -3,12 +3,13 @@ import { useMediaQuery } from "react-responsive";
 import Navbar from "./components/Navbar";
 import NavSheet from "./components/NavSheet";
 import { Separator } from "../ui/separator";
+import { cn } from "@/utils/utils";
 
 const Header = () => {
   const isDesktop = useMediaQuery({ query: "(min-width: 820px)" });
 
   return (
-    <header className="fixed w-full backdrop-blur-md flex flex-col z-20">
+    <header className={cn("fixed w-full backdrop-blur-md flex flex-col z-10")}>
       {isDesktop ? <Navbar /> : <NavSheet />}
       <Separator />
     </header>

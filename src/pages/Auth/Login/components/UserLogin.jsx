@@ -44,7 +44,7 @@ const UserLogin = ({ schema, defaultValues }) => {
         </CardTitle>
         <CardDescription>Login to view your certificates.</CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -67,8 +67,8 @@ const UserLogin = ({ schema, defaultValues }) => {
                 <FormItem className={cn("relative")}>
                   <div className="flex items-center justify-between">
                     <FormLabel>Password</FormLabel>
-                    <Button variant="link" type="button">
-                      <span className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-semibold hover:underline decoration-indigo-600">
+                    <Button variant="link" type="button" className="group">
+                      <span className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-semibold group-hover:underline decoration-indigo-600">
                         Forgot your password?
                       </span>
                     </Button>

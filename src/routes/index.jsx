@@ -12,6 +12,7 @@ const AppRoutes = () => {
       <Route path="/login/institute" element={<LoginLayout />} />
       <Route path="/login/admin" element={<LoginLayout />} />
       <Route path="/register/institute" element={<RegisterLayout />} />
+      <Route path="/institute/verify" element={<RegisterLayout />} />
     </Routes>
   );
 };

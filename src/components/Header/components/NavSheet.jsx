@@ -58,7 +58,7 @@ const NavSheet = () => {
               />
             </Button>
           </PopoverTrigger>
-          <PopoverContent asChild>
+          <PopoverContent sideOffset={15} asChild>
             <ThemeSwitcher />
           </PopoverContent>
         </Popover>
@@ -67,7 +67,7 @@ const NavSheet = () => {
         <SheetTrigger>
           <HamburgerMenuIcon className="text-indigo-500 dark:text-indigo-500 size-10 p-2 rounded-md border dark:border-neutral-800" />
         </SheetTrigger>
-        <SheetContent side="top" className="h-1/2 p-0 flex flex-col gap-y-0">
+        <SheetContent side="top" className="h-3/4 p-0 flex flex-col gap-y-0">
           <SheetHeader className="px-2 py-2 font-spaceGrotesk">
             <SheetTitle>
               <div className="flex gap-x-2 items-center">

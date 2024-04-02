@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -9,6 +10,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -42,7 +44,7 @@ const InstituteLogin = ({ schema, defaultValues }) => {
         </CardTitle>
         <CardDescription>Login to issue certificates.</CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent className="pb-3">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -78,8 +80,8 @@ const InstituteLogin = ({ schema, defaultValues }) => {
                 <FormItem>
                   <div className="flex items-center justify-between">
                     <FormLabel>Password</FormLabel>
-                    <Button variant="link" type="button">
-                      <span className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-semibold hover:underline decoration-indigo-600">
+                    <Button variant="link" type="button" className="group">
+                      <span className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-semibold group-hover:underline decoration-indigo-600">
                         Forgot your password?
                       </span>
                     </Button>
@@ -138,6 +140,17 @@ const InstituteLogin = ({ schema, defaultValues }) => {
           </form>
         </Form>
       </CardContent>
+      <CardFooter className="pb-2">
+        <span className="text-center text-sm w-full">
+          Don't have an account?{" "}
+          <Link
+            to="/register/institute"
+            className="hover:bg-gradient-to-r from-blue-600 to-indigo-600 hover:text-transparent hover:bg-clip-text hover:underline decoration-indigo-600/50 hover:font-semibold transition-colors duration-300"
+          >
+            Register
+          </Link>
+        </span>
+      </CardFooter>
     </Card>
   );
 };

@@ -16,6 +16,8 @@ import Feature4 from "@/assets/feature4.webp";
 import User from "@/assets/user.jpg";
 import Institution from "@/assets/institution.jpg";
 import Admin from "@/assets/admin.jpg";
+import OTP from "@/assets/otp.jpg";
+import Upload from "@/assets/upload.jpg";
 
 export {
   Logo,
@@ -27,6 +29,8 @@ export {
   User,
   Institution,
   Admin,
+  OTP,
+  Upload,
 };
 
 export const navItems = [

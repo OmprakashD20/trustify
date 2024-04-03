@@ -3,7 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import Navbar from "./components/Navbar";
 import NavSheet from "./components/NavSheet";
 import { Separator } from "../ui/separator";
-import { cn } from "@/utils/utils";
+import { cn } from "@/utils";
 
 const Header = () => {
   const isDesktop = useMediaQuery({ query: "(min-width: 820px)" });

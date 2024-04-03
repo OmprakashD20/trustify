@@ -1,4 +1,4 @@
-import { cn } from "@/utils/utils";
+import { cn } from "@/utils";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import {
   IconLockAccess,
@@ -11,8 +11,11 @@ import { Feature1, Feature2, Feature3, Feature4 } from "@/constants";
 
 const Features = () => {
   return (
-    <BentoGrid id="features" className="max-w-2xl sm:max-w-4xl mx-auto sm:auto-rows-[20rem] 
-    px-2">
+    <BentoGrid
+      id="features"
+      className="max-w-2xl sm:max-w-4xl mx-auto sm:auto-rows-[20rem] 
+    px-2"
+    >
       {items.map((item, i) => (
         <BentoGridItem
           key={i}

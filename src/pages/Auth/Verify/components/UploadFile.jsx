@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import toast from "react-hot-toast";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import {
@@ -10,6 +11,8 @@ import {
   Video,
   X,
 } from "lucide-react";
+
+import { useInstituteContext } from "@/context/InstituteContext";
 
 import {
   Card,
@@ -54,7 +57,8 @@ const OtherColor = {
   fillColor: "fill-gray-400",
 };
 
-const UploadFile = () => {
+const UploadFile = ({ setProofUrls }) => {
+  const { institute } = useInstituteContext();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [filesToUpload, setFilesToUpload] = useState([]);
 
@@ -125,21 +129,29 @@ const UploadFile = () => {
     });
   };
 
-  const uploadImageToCloudinary = async (
+  const uploadFileToCloudinary = async (
     formData,
     onUploadProgress,
     cancelSource
   ) => {
-    return axios.post(
-      `https://api.cloudinary.com/v1_1/${
-        import.meta.env.VITE_CLOUDINARY_NAME
-      }/image/upload`,
-      formData,
-      {
-        onUploadProgress,
-        cancelToken: cancelSource.token,
-      }
-    );
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_CLOUDINARY_NAME
+        }/image/upload`,
+        formData,
+        {
+          onUploadProgress,
+          cancelToken: cancelSource.token,
+        }
+      );
+      const { secure_url: url } = response.data;
+
+      return url;
+    } catch (error) {
+      console.error("Error uploading file: ", error);
+      throw error;
+    }
   };
 
   const removeFile = (file) => {
@@ -166,22 +178,19 @@ const UploadFile = () => {
       ];
     });
 
-    // cloudinary upload
-
     const fileUploadBatch = acceptedFiles.map((file) => {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("public_id", file.name);
+      // formData.append("public_id", file.name);
       formData.append("tags", "Institute Proof");
-      // todo: change folder name to the institute name
-      formData.append("folder", "Test");
+      formData.append("folder", institute.name);
       formData.append(
         "upload_preset",
         import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
       );
 
       const cancelSource = axios.CancelToken.source();
-      return uploadImageToCloudinary(
+      return uploadFileToCloudinary(
         formData,
         (progressEvent) => onUploadProgress(progressEvent, file, cancelSource),
         cancelSource
@@ -189,8 +198,19 @@ const UploadFile = () => {
     });
 
     try {
-      await Promise.all(fileUploadBatch);
-      alert("All files uploaded successfully");
+      const uploadedUrls = await Promise.all(
+        fileUploadBatch.map(async (fileUploadPromise) => {
+          try {
+            const url = await fileUploadPromise;
+            return url;
+          } catch (error) {
+            toast.error("Error uploading file");
+            return null;
+          }
+        })
+      );
+      const successfulUrls = uploadedUrls.filter((url) => url !== null);
+      setProofUrls((prevUrls) => [...prevUrls, ...successfulUrls]);
     } catch (error) {
       console.error("Error uploading files: ", error);
     }

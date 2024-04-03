@@ -16,6 +16,9 @@ import Feature4 from "@/assets/feature4.webp";
 import User from "@/assets/user.jpg";
 import Institution from "@/assets/institution.jpg";
 import Admin from "@/assets/admin.jpg";
+import UserThumb from "@/assets/user.webp";
+import InstitutionThumb from "@/assets/institution.webp";
+import AdminThumb from "@/assets/admin.webp";
 import OTP from "@/assets/otp.jpg";
 import Upload from "@/assets/upload.jpg";
 
@@ -27,8 +30,11 @@ export {
   Feature3,
   Feature4,
   User,
+  UserThumb,
   Institution,
+  InstitutionThumb,
   Admin,
+  AdminThumb,
   OTP,
   Upload,
 };
@@ -65,21 +71,21 @@ export const loginOptions = [
     id: 1,
     title: "User Login",
     desc: "View your certificates",
-    image: User,
+    image: UserThumb,
     path: "/login/user",
   },
   {
     id: 2,
     title: "Institution Login",
     desc: "Issue certificates",
-    image: Institution,
+    image: InstitutionThumb,
     path: "/login/institute",
   },
   {
     id: 3,
     title: "Admin Login",
     desc: "Manage the platform",
-    image: Admin,
+    image: AdminThumb,
     path: "/login/admin",
   },
 ];

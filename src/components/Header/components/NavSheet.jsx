@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import { useMediaQuery } from "react-responsive";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { LucideChevronRight, Paintbrush } from "lucide-react";
+import { LogOut, LucideChevronRight, Paintbrush } from "lucide-react";
+import { useInstituteContext } from "@/context/InstituteContext";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
   SheetFooter,
+  SheetClose,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 
@@ -25,11 +27,12 @@ import ThemeSwitcher from "./ThemeSwitcher";
 
 import { Logo, navItems } from "@/constants";
 import { useAppContext } from "@/context/AppContext";
-import { cn } from "@/utils/utils";
+import { cn } from "@/utils";
 
 const NavSheet = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 820px)" });
-  const { currentPage } = useAppContext();
+  const { auth } = useInstituteContext();
+  const { currentPage, handleLogout } = useAppContext();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -67,7 +70,7 @@ const NavSheet = () => {
         <SheetTrigger>
           <HamburgerMenuIcon className="text-indigo-500 dark:text-indigo-500 size-10 p-2 rounded-md border dark:border-neutral-800" />
         </SheetTrigger>
-        <SheetContent side="top" className="h-3/4 p-0 flex flex-col gap-y-0">
+        <SheetContent side="top" className="h-[60%] p-0 flex flex-col gap-y-0">
           <SheetHeader className="px-2 py-2 font-spaceGrotesk">
             <SheetTitle>
               <div className="flex gap-x-2 items-center">
@@ -107,6 +110,22 @@ const NavSheet = () => {
               })}
             </ul>
             <Separator />
+            {auth && (
+              <SheetClose>
+                <div
+                  className="rounded-md text-start transition-all duration-300 ease-in-out dark:hover:bg-white/10 hover:bg-indigo-500/65 ml-2 mr-4 mt-3"
+                  onClick={handleLogout}
+                >
+                  <div className="group flex items-center justify-between py-1 pr-2 hover:text-neutral-100 font-spaceGrotesk">
+                    <div className="group flex gap-x-2 justify-center items-center px-3 py-1 lg:px-4 xl:px-5 xl:py-1.5">
+                      <LogOut size={20} />
+                      <span>Logout</span>
+                    </div>
+                    <LucideChevronRight className="-translate-x-4 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100" />
+                  </div>
+                </div>
+              </SheetClose>
+            )}
           </SheetDescription>
           <SheetFooter>
             <span className="text-center text-neutral-500 dark:text-neutral-500 font-spaceGrotesk text-xs">

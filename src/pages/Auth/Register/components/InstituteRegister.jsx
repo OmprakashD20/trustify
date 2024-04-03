@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { OTP, Upload } from "@/constants";
+import { useInstituteContext } from "@/context/InstituteContext";
 
 import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 
@@ -31,29 +31,30 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { cn } from "@/utils";
 
 const InstituteRegister = ({ schema, defaultValues, handleBgImage }) => {
+  const { handleInstituteRegister, handleInstituteVerifyEmail } =
+    useInstituteContext();
+  const [isPending, setIsPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
-  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues,
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    //set show otp true afer the institute details are submitted and the server responded with a show otp flag
-    showOTP ? setShowOTP(false) : setShowOTP(true);
-
-    //change the background image to OTP image after the institute details are submitted
-    !showOTP && handleBgImage(OTP);
-
-    //change the background image to Upload image after the OTP is submitted
-    showOTP && handleBgImage(Upload);
-
-    //navigate to the file upload page after the OTP is submitted
-    showOTP && navigate("/institute/verify");
+  const onSubmit = async (data) => {
+    setIsPending(true);
+    if (!showOTP) {
+      await handleInstituteRegister(data, setShowOTP, handleBgImage);
+    } else {
+      await handleInstituteVerifyEmail({
+        email: data.email,
+        otp: data.otp,
+      });
+    }
+    setIsPending(false);
   };
 
   return (
@@ -102,7 +103,11 @@ const InstituteRegister = ({ schema, defaultValues, handleBgImage }) => {
                     <FormItem>
                       <FormLabel>Institute Name</FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value ?? ""} />
+                        <Input
+                          {...field}
+                          value={field.value ?? ""}
+                          disabled={isPending}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -115,7 +120,11 @@ const InstituteRegister = ({ schema, defaultValues, handleBgImage }) => {
                     <FormItem>
                       <FormLabel>Institute Email</FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value ?? ""} />
+                        <Input
+                          {...field}
+                          value={field.value ?? ""}
+                          disabled={isPending}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -133,6 +142,7 @@ const InstituteRegister = ({ schema, defaultValues, handleBgImage }) => {
                             {...field}
                             type={showPassword ? "text" : "password"}
                             value={field.value ?? ""}
+                            disabled={isPending}
                           />
                         </FormControl>
                         {showPassword ? (
@@ -161,15 +171,15 @@ const InstituteRegister = ({ schema, defaultValues, handleBgImage }) => {
                 />
                 <FormField
                   control={form.control}
-                  name="confirmPassword"
+                  name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
+                      <FormLabel>Phone Number</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          type="password"
                           value={field.value ?? ""}
+                          disabled={isPending}
                         />
                       </FormControl>
                       <FormMessage />
@@ -180,9 +190,13 @@ const InstituteRegister = ({ schema, defaultValues, handleBgImage }) => {
             )}
             <Button
               type="submit"
-              className="px-8 py-3 text-base rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300 w-full bg-transparent hover:bg-transparent"
+              disabled={isPending}
+              className={cn(
+                "px-8 py-3 text-base rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300 w-full bg-transparent hover:bg-transparent",
+                isPending && "cursor-not-allowed"
+              )}
             >
-              Login
+              Register
             </Button>
           </form>
         </Form>

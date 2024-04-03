@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { cn } from "@/utils/utils";
+import { cn } from "@/utils";
 
 const UserLogin = ({ schema, defaultValues }) => {
   const [showPassword, setShowPassword] = useState(false);

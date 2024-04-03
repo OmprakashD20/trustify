@@ -1,37 +1,47 @@
 import { z } from "zod";
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+
+import { useInstituteContext } from "@/context/InstituteContext";
 
 import { Institution } from "@/constants";
 
 import InstituteRegister from "./components/InstituteRegister";
-import InstituteVerify from "./components/InstituteVerify";
 
 const RegisterLayout = () => {
+  const { auth } = useInstituteContext();
   const [bgImage, setBgImage] = useState(Institution);
   const pathname = useLocation().pathname;
-  const instituteSchema = z
-    .object({
-      name: z.string().min(1, "Institute name is required"),
-      email: z.string().email().min(1, "Email is required"),
-      password: z.string().min(1, "Password is required"),
-      confirmPassword: z.string().min(1, "Confirm Password is required"),
-      otp: z.string().optional(),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
-    });
+  const instituteSchema = z.object({
+    name: z.string().min(1, "Institute name is required"),
+    email: z.string().email().min(1, "Email is required"),
+    password: z.string().min(1, "Password is required"),
+    phone: z.string().length(10, "Phone number must be 10 digits"),
+    otp: z.string().optional(),
+  });
 
   const instituteDefaultValues = {
     name: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    phone: "",
     otp: "",
   };
 
   const handleBgImage = (image) => setBgImage(image);
+
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
+
+  if(auth) return <Navigate to="/institute" />;
 
   return (
     <div className="pt-24 lg:pt-0 pb-10 h-[100dvh] flex items-center justify-center lg:grid lg:grid-cols-2 overflow-hidden">
@@ -48,7 +58,6 @@ const RegisterLayout = () => {
             handleBgImage={handleBgImage}
           />
         )}
-        {pathname === "/institute/verify" && <InstituteVerify />}
       </div>
     </div>
   );

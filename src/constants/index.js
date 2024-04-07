@@ -3,6 +3,7 @@ import {
   LucideInfo,
   LucideContact,
   LucideWallet,
+  LucideLogIn,
 } from "lucide-react";
 
 import Logo from "@/assets/logo.svg";
@@ -16,11 +17,10 @@ import Feature4 from "@/assets/feature4.webp";
 import User from "@/assets/user.jpg";
 import Institution from "@/assets/institution.jpg";
 import Admin from "@/assets/admin.jpg";
-import UserThumb from "@/assets/user.webp";
-import InstitutionThumb from "@/assets/institution.webp";
-import AdminThumb from "@/assets/admin.webp";
 import OTP from "@/assets/otp.jpg";
 import Upload from "@/assets/upload.jpg";
+import ForgotPassword from "@/assets/forgot-password.jpg";
+import ResetPassword from "@/assets/reset-password.jpg";
 
 export {
   Logo,
@@ -30,13 +30,12 @@ export {
   Feature3,
   Feature4,
   User,
-  UserThumb,
   Institution,
-  InstitutionThumb,
   Admin,
-  AdminThumb,
   OTP,
   Upload,
+  ForgotPassword,
+  ResetPassword,
 };
 
 export const navItems = [
@@ -60,6 +59,12 @@ export const navItems = [
   },
   {
     id: 4,
+    title: "Login",
+    path: "/#login",
+    icon: LucideLogIn,
+  },
+  {
+    id: 5,
     title: "Contact",
     path: "/#contact",
     icon: LucideContact,
@@ -71,21 +76,21 @@ export const loginOptions = [
     id: 1,
     title: "User Login",
     desc: "View your certificates",
-    image: UserThumb,
+    image: User,
     path: "/login/user",
   },
   {
     id: 2,
     title: "Institution Login",
     desc: "Issue certificates",
-    image: InstitutionThumb,
+    image: Institution,
     path: "/login/institute",
   },
   {
     id: 3,
     title: "Admin Login",
     desc: "Manage the platform",
-    image: AdminThumb,
+    image: Admin,
     path: "/login/admin",
   },
 ];

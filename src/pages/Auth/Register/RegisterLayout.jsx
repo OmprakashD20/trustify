@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { useInstituteContext } from "@/context/InstituteContext";
 
@@ -40,8 +41,10 @@ const RegisterLayout = () => {
     window.addEventListener("beforeunload", unloadCallback);
     return () => window.removeEventListener("beforeunload", unloadCallback);
   }, []);
-
-  if(auth) return <Navigate to="/institute" />;
+  if (auth) {
+    toast.success("You are already logged in");
+    return <Navigate to="/institute" replace={true} />;
+  }
 
   return (
     <div className="pt-24 lg:pt-0 pb-10 h-[100dvh] flex items-center justify-center lg:grid lg:grid-cols-2 overflow-hidden">

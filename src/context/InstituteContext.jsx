@@ -9,11 +9,12 @@ import {
   apiInstituteVerifyEmail,
   apiUploadProof,
   apiInstituteDetails,
+  apiInstituteForgotPassword,
+  apiInstituteResetPassword,
 } from "@/api";
 
 import { OTP } from "@/constants";
 import Cookies from "js-cookie";
-import api from "@/api/axios";
 
 export const InstituteContext = React.createContext();
 
@@ -136,10 +137,35 @@ export const InstituteProvider = ({ children }) => {
 
   //upload proof
   const handleInstituteProofUpload = async (data) => {
-    toast.promise(apiUploadProof({ proof: data }), {
+    return toast.promise(apiUploadProof({ proof: data }), {
       loading: "Uploading...",
       success: (message) => {
         // navigate(INSTITUTE_DASHBOARD, { replace: true });
+        return message;
+      },
+      error: (err) => {
+        return typeof err === "object" ? "Something went wrong..." : err;
+      },
+    });
+  };
+
+  //send reset password link
+  const handleInstituteForgotPassword = async (data) => {
+    return toast.promise(apiInstituteForgotPassword({ ...data }), {
+      loading: "Sending reset link...",
+      success: (message) => message,
+      error: (err) => {
+        return typeof err === "object" ? "Something went wrong..." : err;
+      },
+    });
+  };
+
+  //update password
+  const handleInstituteResetPassword = async (data) => {
+    toast.promise(apiInstituteResetPassword({ ...data }), {
+      loading: "Updating...",
+      success: (message) => {
+        navigate("/institute/login", { replace: true });
         return message;
       },
       error: (err) => {
@@ -164,6 +190,8 @@ export const InstituteProvider = ({ children }) => {
         handleInstituteLogin,
         handleInstituteVerifyEmail,
         handleInstituteProofUpload,
+        handleInstituteForgotPassword,
+        handleInstituteResetPassword,
       }}
     >
       {children}

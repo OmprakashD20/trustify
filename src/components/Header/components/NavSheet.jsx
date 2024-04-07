@@ -85,6 +85,7 @@ const NavSheet = () => {
             <Separator />
             <ul className="mb-1 mt-2 flex flex-col gap-y-3 pl-2 pr-4 pb-3">
               {navItems.map((item) => {
+                if (auth && item.title === "Login") return;
                 return (
                   <li
                     key={item.id}

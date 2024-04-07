@@ -7,14 +7,17 @@ import { loginOptions } from "@/constants";
 const Login = () => {
   const navigate = useNavigate();
   return (
-    <div className="my-20 flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-y-6 sm:gap-y-0 sm:gap-x-14">
+    <div
+      id="login"
+      className="my-20 flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-y-6 sm:gap-y-0 sm:gap-x-14"
+    >
       {loginOptions.map((option, index) => (
         <CardContainer key={index}>
           <CardBody className="relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] max-w-sm sm:w-[18rem] h-auto rounded-xl px-6 border">
             <CardItem translateZ="60" className="w-full mt-4">
               <img
                 src={option.image}
-                className="h-52 w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                className="h-48 w-full object-cover rounded-xl group-hover/card:shadow-xl"
                 alt={`${option.title} login`}
               />
             </CardItem>

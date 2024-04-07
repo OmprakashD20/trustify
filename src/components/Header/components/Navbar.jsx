@@ -32,20 +32,23 @@ const Navbar = () => {
       </div>
       <div className="flex items-center gap-x-2">
         <div className="flex gap-x-2 items-center border border-neutral-300 rounded-md text-neutral-900 bg-neutral-100 py-0.5 space-x-2 px-2 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-400">
-          {navItems.map((item) => (
-            <HashLink
-              key={item.title}
-              smooth
-              to={item.path}
-              className={cn(
-                "py-[4.5px] hover:text-indigo-500 dark:hover:text-indigo-500",
-                currentPage === item.path &&
-                  "text-indigo-500 dark:text-indigo-500"
-              )}
-            >
-              {item.title}
-            </HashLink>
-          ))}
+          {navItems.map((item) => {
+            if (auth && item.title === "Login") return;
+            return (
+              <HashLink
+                key={item.title}
+                smooth
+                to={item.path}
+                className={cn(
+                  "py-[4.5px] hover:text-indigo-500 dark:hover:text-indigo-500",
+                  currentPage === item.path &&
+                    "text-indigo-500 dark:text-indigo-500"
+                )}
+              >
+                {item.title}
+              </HashLink>
+            );
+          })}
         </div>
         {auth && currentPage !== "/institute" && (
           <Button

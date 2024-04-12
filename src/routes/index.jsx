@@ -10,6 +10,7 @@ import VerifyLayout from "@/pages/Auth/Verify/VerifyLayout";
 
 import ForgotPasswordLayout from "@/pages/Auth/ForgotPassword/ForgotPasswordLayout";
 import ResetPasswordLayout from "@/pages/Auth/ResetPassword/ResetPasswordLayout";
+import UploadTemplate from "@/pages/Institute/Template/UploadTemplate";
 
 const AppRoutes = () => {
   return (
@@ -29,6 +30,7 @@ const AppRoutes = () => {
         path="/institute/reset-password"
         element={<ResetPasswordLayout />}
       />
+      <Route path="/institute/upload-template" element={<UploadTemplate />} />
     </Routes>
   );
 };

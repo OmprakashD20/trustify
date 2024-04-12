@@ -2,7 +2,15 @@ import { useEffect, useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import { useMediaQuery } from "react-responsive";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { LogOut, LucideChevronRight, Paintbrush } from "lucide-react";
+import {
+  LogOut,
+  LucideChevronRight,
+  Paintbrush,
+  LayoutDashboard,
+} from "lucide-react";
+
+import { useAppContext } from "@/context/AppContext";
+import { useAdminContext } from "@/context/AdminContext";
 import { useInstituteContext } from "@/context/InstituteContext";
 
 import { Button } from "@/components/ui/button";
@@ -26,16 +34,29 @@ import { Separator } from "@/components/ui/separator";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 import { Logo, navItems } from "@/constants";
-import { useAppContext } from "@/context/AppContext";
 import { cn } from "@/utils";
 
 const NavSheet = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 820px)" });
-  const { auth } = useInstituteContext();
-  const { currentPage, handleLogout } = useAppContext();
+  const { userType, currentPage } = useAppContext();
+  const { handleAdminLogout } = useAdminContext();
+  const { handleInstituteLogout } = useInstituteContext();
+  const [isOpened, setIsOpened] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+
+  const navigateToDashboard = () => {
+    if (userType === "institute") navigate("/institute");
+    if (userType === "user") navigate("/user");
+    if (userType === "admin") navigate("/admin");
+  };
+
+  const handleLogout = () => {
+    //todo: handle logout for the user
+    if (userType === "institute") handleInstituteLogout();
+    if (userType === "admin") handleAdminLogout();
+  };
 
   if (!mounted) return null;
   return (
@@ -66,12 +87,12 @@ const NavSheet = () => {
           </PopoverContent>
         </Popover>
       )}
-      <Sheet>
+      <Sheet open={isOpened} onOpenChange={setIsOpened}>
         <SheetTrigger>
           <HamburgerMenuIcon className="text-indigo-500 dark:text-indigo-500 size-10 p-2 rounded-md border dark:border-neutral-800" />
         </SheetTrigger>
         <SheetContent side="top" className="h-[60%] p-0 flex flex-col gap-y-0">
-          <SheetHeader className="px-2 py-2 font-spaceGrotesk">
+          <SheetHeader className="px-2 py-3 font-spaceGrotesk">
             <SheetTitle>
               <div className="flex gap-x-2 items-center">
                 <img src={Logo} alt="Trustify Logo" className="size-9" />
@@ -84,8 +105,7 @@ const NavSheet = () => {
           <SheetDescription className="flex-1">
             <Separator />
             <ul className="mb-1 mt-2 flex flex-col gap-y-3 pl-2 pr-4 pb-3">
-              {navItems.map((item) => {
-                if (auth && item.title === "Login") return;
+              {navItems.slice(0, 4).map((item) => {
                 return (
                   <li
                     key={item.id}
@@ -94,6 +114,7 @@ const NavSheet = () => {
                       currentPage === item.path &&
                         "bg-indigo-500/65 dark:bg-white/10 text-neutral-100"
                     )}
+                    onClick={() => setIsOpened(false)}
                   >
                     <HashLink
                       smooth
@@ -109,9 +130,42 @@ const NavSheet = () => {
                   </li>
                 );
               })}
+              {navItems.slice(4).map((item) => {
+                if (userType !== "" && item.title === "Login") return;
+                return (
+                  <HashLink
+                    key={item.title}
+                    smooth
+                    to={item.path}
+                    onClick={() => setIsOpened(false)}
+                    className={
+                      "px-4 py-[5px] font-medium rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/50 transition-colors duration-300"
+                    }
+                  >
+                    <div className="flex gap-x-2 justify-center items-center">
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </div>
+                  </HashLink>
+                );
+              })}
+              {userType !== "" &&
+                ((userType === "institute" && currentPage !== "/institute") ||
+                  (userType === "user" && currentPage !== "/user") ||
+                  (userType === "admin" && currentPage !== "/admin")) && (
+                  <div
+                    className="px-4 py-[5px] font-medium rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/50 transition-colors duration-300"
+                    onClick={navigateToDashboard}
+                  >
+                    <div className="flex gap-x-2 justify-center items-center">
+                      <LayoutDashboard />
+                      <span>Dashboard</span>
+                    </div>
+                  </div>
+                )}
             </ul>
             <Separator />
-            {auth && (
+            {userType !== "" && (
               <SheetClose>
                 <div
                   className="rounded-md text-start transition-all duration-300 ease-in-out dark:hover:bg-white/10 hover:bg-indigo-500/65 ml-2 mr-4 mt-3"

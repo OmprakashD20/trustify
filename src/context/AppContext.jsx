@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 export const AppContext = React.createContext();
 
 export const AppProvider = ({ children }) => {
-  const { setAuth, setInstitute } = useInstituteContext();
+  const [userType, setUserType] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState("/");
 
@@ -18,31 +18,14 @@ export const AppProvider = ({ children }) => {
     setCurrentPage(location ? location.pathname : "/");
   }, [location]);
 
-  //logout
-  const handleLogout = async () => {
-    //todo: handle logout based on the user type
-    Cookies.remove("token");
-    toast.success("Logged out successfully");
-    navigate("/");
-    setAuth(false);
-    setInstitute({
-      name: "",
-      code: "",
-      email: "",
-      phone: "",
-      proof: [],
-      isApproved: false,
-      isEmailVerified: false,
-    });
-  };
-
   return (
     <AppContext.Provider
       value={{
         isLoading,
         setIsLoading,
+        userType,
+        setUserType,
         currentPage,
-        handleLogout,
       }}
     >
       {children}

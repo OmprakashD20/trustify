@@ -1,33 +1,19 @@
-import DataTable from "@/components/DataTable/DataTable";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-const columns = [
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "phone",
-    header: "Phone",
-  },
-  {
-    accessorKey: "certificateIssued",
-    header: "Certificate Issued",
-  },
-  {
-    accessorKey: "revokeCertificate",
-    header: "Revoke Certificate",
-  },
-];
+import { useInstituteContext } from "@/context/InstituteContext";
 
 const InstituteDashboard = () => {
+  const { auth } = useInstituteContext();
+  const navigate = useNavigate();
+  if (!auth) {
+    toast.error("Login to access this page");
+    navigate("/", {
+      replace: true,
+    });
+  }
   return (
-    <div className="pt-16 md:pt-24 pb-10 h-[100dvh] flex items-start justify-center">
-      <DataTable columns={columns} data={[]} className={"w-full mx-8"} />
-    </div>
+    <div className="pt-16 md:pt-24 pb-10 h-[100dvh] flex items-start justify-center"></div>
   );
 };
 

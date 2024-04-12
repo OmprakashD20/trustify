@@ -11,14 +11,18 @@ import {
   apiInstituteDetails,
   apiInstituteForgotPassword,
   apiInstituteResetPassword,
+  apiUploadCertificateTemplate,
 } from "@/api";
 
 import { OTP } from "@/constants";
 import Cookies from "js-cookie";
 
+import { useAppContext } from "./AppContext";
+
 export const InstituteContext = React.createContext();
 
 export const InstituteProvider = ({ children }) => {
+  const { setUserType } = useAppContext();
   const [auth, setAuth] = useState(false);
   const [institute, setInstitute] = useState({
     name: "",
@@ -26,6 +30,8 @@ export const InstituteProvider = ({ children }) => {
     email: "",
     phone: "",
     proof: [],
+    templates: [],
+    certificateFormat: [],
     isApproved: false,
     isEmailVerified: false,
   });
@@ -41,6 +47,7 @@ export const InstituteProvider = ({ children }) => {
 
     apiInstituteDetails()
       .then((data) => {
+        setUserType("institute");
         setInstitute(data);
         setAuth(true);
       })
@@ -80,6 +87,9 @@ export const InstituteProvider = ({ children }) => {
     toast.promise(apiInstituteLogin({ ...data }), {
       loading: "Logging in...",
       success: (data) => {
+        setUserType("institute");
+        setInstitute(data.institute);
+        setAuth(true);
         //navigate to the proof upload page after the email is verified
         if (
           data.institute.isEmailVerified &&
@@ -92,11 +102,8 @@ export const InstituteProvider = ({ children }) => {
         }
 
         //navigate to the dashboard after the email is verified and the institute has already uploaded the proof
-        if (data.institute.isEmailVerified) {
-          setInstitute(data.institute);
-          setAuth(true);
+        if (data.institute.isEmailVerified)
           navigate(INSTITUTE_DASHBOARD, { replace: true });
-        }
 
         return data.message;
       },
@@ -106,11 +113,30 @@ export const InstituteProvider = ({ children }) => {
     });
   };
 
+  //logout
+  const handleInstituteLogout = async () => {
+    Cookies.remove("token");
+    toast.success("Logged out successfully");
+    navigate("/");
+    setAuth(false);
+    setInstitute({
+      name: "",
+      code: "",
+      email: "",
+      phone: "",
+      proof: [],
+      isApproved: false,
+      isEmailVerified: false,
+    });
+    setUserType("");
+  };
+
   //verify email
   const handleInstituteVerifyEmail = async (data) => {
     toast.promise(apiInstituteVerifyEmail({ ...data }), {
       loading: "Verifying...",
       success: (data) => {
+        setUserType("institute");
         setInstitute(data.institute);
         setAuth(true);
 
@@ -174,6 +200,20 @@ export const InstituteProvider = ({ children }) => {
     });
   };
 
+  //upload certificate template
+  const handleInstituteUploadCertificateTemplate = async (data) => {
+    return toast.promise(apiUploadCertificateTemplate({ template: data }), {
+      loading: "Uploading...",
+      success: (message) => {
+        refreshInstitute();
+        return message;
+      },
+      error: (err) => {
+        return typeof err === "object" ? "Something went wrong..." : err;
+      },
+    });
+  };
+
   useEffect(() => {
     refreshInstitute();
   }, [auth]);
@@ -188,10 +228,12 @@ export const InstituteProvider = ({ children }) => {
         refreshInstitute,
         handleInstituteRegister,
         handleInstituteLogin,
+        handleInstituteLogout,
         handleInstituteVerifyEmail,
         handleInstituteProofUpload,
         handleInstituteForgotPassword,
         handleInstituteResetPassword,
+        handleInstituteUploadCertificateTemplate,
       }}
     >
       {children}

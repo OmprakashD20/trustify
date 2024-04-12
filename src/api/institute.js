@@ -7,8 +7,19 @@ export const apiInstituteDetails = async () => {
   try {
     const response = await api.get(`${url}/`);
 
-    const { name, code, email, phone, proof, isApproved, isEmailVerified } =
-      response.data;
+    const {
+      name,
+      code,
+      email,
+      phone,
+      proof,
+      templates,
+      certificateFormat,
+      isApproved,
+      isEmailVerified,
+    } = response.data;
+
+    console.log(response.data);
 
     const institute = {
       name,
@@ -16,6 +27,8 @@ export const apiInstituteDetails = async () => {
       email,
       phone,
       proof,
+      templates,
+      certificateFormat,
       isApproved,
       isEmailVerified,
     };
@@ -31,6 +44,20 @@ export const apiInstituteDetails = async () => {
 export const apiUploadProof = async (data) => {
   try {
     const response = await api.post(`${url}/upload-proof`, data);
+
+    const { message } = response.data;
+
+    return message;
+  } catch (error) {
+    if (error.response) throw error.response.data.error;
+    throw error;
+  }
+};
+
+//upload institute's certificate templates
+export const apiUploadCertificateTemplate = async (data) => {
+  try {
+    const response = await api.post(`${url}/upload-template`, data);
 
     const { message } = response.data;
 

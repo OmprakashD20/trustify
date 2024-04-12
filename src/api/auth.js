@@ -3,6 +3,22 @@ import Cookies from "js-cookie";
 
 const url = "/";
 
+//admin login
+export const apiAdminLogin = async (data) => {
+  try {
+    const response = await api.post(`${url}login/admin`, data);
+
+    const { token, message } = response.data;
+
+    Cookies.set("token", token);
+
+    return message;
+  } catch (error) {
+    if (error.response) throw error.response.data.error;
+    throw error;
+  }
+};
+
 //instiute register
 export const apiInstituteRegister = async (data) => {
   try {
@@ -28,6 +44,8 @@ export const apiInstituteLogin = async (data) => {
       email,
       phone,
       proof,
+      templates,
+      certificateFormat,
       token,
       message,
       isApproved,
@@ -42,6 +60,8 @@ export const apiInstituteLogin = async (data) => {
       email,
       phone,
       proof,
+      templates,
+      certificateFormat,
       isApproved,
       isEmailVerified,
     };
@@ -64,6 +84,8 @@ export const apiInstituteVerifyEmail = async (data) => {
       email,
       phone,
       proof,
+      templates,
+      certificateFormat,
       token,
       message,
       isApproved,
@@ -78,6 +100,8 @@ export const apiInstituteVerifyEmail = async (data) => {
       email,
       phone,
       proof,
+      templates,
+      certificateFormat,
       isApproved,
       isEmailVerified,
     };

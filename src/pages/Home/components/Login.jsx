@@ -13,7 +13,7 @@ const Login = () => {
     >
       {loginOptions.map((option, index) => (
         <CardContainer key={index}>
-          <CardBody className="relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] max-w-sm sm:w-[18rem] h-auto rounded-xl px-6 border">
+          <CardBody className="relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] max-w-xs sm:w-[18rem] h-auto rounded-xl px-6 border">
             <CardItem translateZ="60" className="w-full mt-4">
               <img
                 src={option.image}

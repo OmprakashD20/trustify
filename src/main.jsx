@@ -10,6 +10,7 @@ import "@/index.css";
 import { ThemeProvider } from "@/providers/ThemeProvider.jsx";
 import { AppProvider } from "@/context/AppContext";
 import { InstituteProvider } from "@/context/InstituteContext";
+import { AdminProvider } from "@/context/AdminContext";
 import { ScrollToTop } from "@/utils";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -48,11 +49,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           },
         }}
       />
-      <InstituteProvider>
-        <AppProvider>
-          <App />
-        </AppProvider>
-      </InstituteProvider>
+      <AppProvider>
+        <AdminProvider>
+          <InstituteProvider>
+            <App />
+          </InstituteProvider>
+        </AdminProvider>
+      </AppProvider>
     </BrowserRouter>
   </ThemeProvider>
 );

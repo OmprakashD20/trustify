@@ -12,8 +12,6 @@ import {
   X,
 } from "lucide-react";
 
-import { useInstituteContext } from "@/context/InstituteContext";
-
 import {
   Card,
   CardDescription,
@@ -57,8 +55,7 @@ const OtherColor = {
   fillColor: "fill-gray-400",
 };
 
-const UploadFile = ({ setProofUrls }) => {
-  const { institute } = useInstituteContext();
+const UploadFile = ({ setUrls, path, tag }) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [filesToUpload, setFilesToUpload] = useState([]);
 
@@ -182,8 +179,8 @@ const UploadFile = ({ setProofUrls }) => {
       const formData = new FormData();
       formData.append("file", file);
       // formData.append("public_id", file.name);
-      formData.append("tags", "Institute Proof");
-      formData.append("folder", institute.name);
+      formData.append("tags", tag);
+      formData.append("folder", path);
       formData.append(
         "upload_preset",
         import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
@@ -210,7 +207,7 @@ const UploadFile = ({ setProofUrls }) => {
         })
       );
       const successfulUrls = uploadedUrls.filter((url) => url !== null);
-      setProofUrls((prevUrls) => [...prevUrls, ...successfulUrls]);
+      setUrls((prevUrls) => [...prevUrls, ...successfulUrls]);
     } catch (error) {
       console.error("Error uploading files: ", error);
     }

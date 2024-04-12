@@ -59,15 +59,15 @@ export const navItems = [
   },
   {
     id: 4,
-    title: "Login",
-    path: "/#login",
-    icon: LucideLogIn,
-  },
-  {
-    id: 5,
     title: "Contact",
     path: "/#contact",
     icon: LucideContact,
+  },
+  {
+    id: 5,
+    title: "Login",
+    path: "/#login",
+    icon: LucideLogIn,
   },
 ];
 

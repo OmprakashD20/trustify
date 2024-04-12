@@ -1,25 +1,41 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
 import { LogOut } from "lucide-react";
 
+import { Logo, navItems } from "@/constants";
+
+import { useAppContext } from "@/context/AppContext";
+import { useAdminContext } from "@/context/AdminContext";
 import { useInstituteContext } from "@/context/InstituteContext";
 
-import { Logo, navItems } from "@/constants";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { cn } from "@/utils";
-import { useEffect, useState } from "react";
-import { useAppContext } from "@/context/AppContext";
 import { Button } from "@/components/ui/button";
 
+import { cn } from "@/utils";
+
 const Navbar = () => {
-  const { auth } = useInstituteContext();
-  const { currentPage, handleLogout } = useAppContext();
+  const { userType, currentPage } = useAppContext();
+  const { handleAdminLogout } = useAdminContext();
+  const { handleInstituteLogout } = useInstituteContext();
   const [mounted, setMounted] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => setMounted(true), []);
+
+  const navigateToDashboard = () => {
+    if (userType === "institute") navigate("/institute");
+    if (userType === "user") navigate("/user");
+    if (userType === "admin") navigate("/admin");
+  };
+
+  const handleLogout = () => {
+    //todo: handle logout for the user
+    if (userType === "institute") handleInstituteLogout();
+    if (userType === "admin") handleAdminLogout();
+  };
 
   if (!mounted) return null;
   return (
@@ -32,17 +48,14 @@ const Navbar = () => {
       </div>
       <div className="flex items-center gap-x-2">
         <div className="flex gap-x-2 items-center border border-neutral-300 rounded-md text-neutral-900 bg-neutral-100 py-0.5 space-x-2 px-2 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-400">
-          {navItems.map((item) => {
-            if (auth && item.title === "Login") return;
+          {navItems.slice(0, 4).map((item) => {
             return (
               <HashLink
                 key={item.title}
                 smooth
                 to={item.path}
                 className={cn(
-                  "py-[4.5px] hover:text-indigo-500 dark:hover:text-indigo-500",
-                  currentPage === item.path &&
-                    "text-indigo-500 dark:text-indigo-500"
+                  "py-[4.5px] hover:text-indigo-500 dark:hover:text-indigo-500"
                 )}
               >
                 {item.title}
@@ -50,17 +63,35 @@ const Navbar = () => {
             );
           })}
         </div>
-        {auth && currentPage !== "/institute" && (
-          <Button
-            className="px-3 text-base rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/50 transition-colors duration-300 bg-transparent hover:bg-transparent"
-            variant="outline"
-            onClick={() => navigate("/institute")}
-          >
-            Dashboard
-          </Button>
-        )}
+        {navItems.slice(4).map((item) => {
+          if (userType !== "" && item.title === "Login") return;
+          return (
+            <HashLink
+              key={item.title}
+              smooth
+              to={item.path}
+              className={
+                "px-4 py-[5px] font-medium rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/50 transition-colors duration-300"
+              }
+            >
+              {item.title}
+            </HashLink>
+          );
+        })}
+        {userType !== "" &&
+          ((userType === "institute" && currentPage !== "/institute") ||
+            (userType === "user" && currentPage !== "/user") ||
+            (userType === "admin" && currentPage !== "/admin")) && (
+            <Button
+              className="px-3 text-base rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/50 transition-colors duration-300 bg-transparent hover:bg-transparent"
+              variant="outline"
+              onClick={navigateToDashboard}
+            >
+              Dashboard
+            </Button>
+          )}
         <ThemeSwitcher />
-        {auth && (
+        {userType !== "" && (
           <Button
             className="px-3 text-base rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/50 transition-colors duration-300 bg-transparent hover:bg-transparent"
             variant="outline"

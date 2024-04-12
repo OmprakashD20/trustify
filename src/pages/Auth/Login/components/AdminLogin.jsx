@@ -2,6 +2,8 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { useAdminContext } from "@/context/AdminContext";
+
 import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@/components/ui/button";
@@ -25,15 +27,18 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/utils";
 
 const AdminLogin = ({ schema, defaultValues }) => {
+  const { handleAdminLogin } = useAdminContext();
   const [showPassword, setShowPassword] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues,
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    form.reset();
+  const onSubmit = async (data) => {
+    setIsPending(true);
+    await handleAdminLogin(data);
+    setIsPending(false);
   };
 
   return (
@@ -54,7 +59,11 @@ const AdminLogin = ({ schema, defaultValues }) => {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value} />
+                    <Input
+                      {...field}
+                      value={field.value}
+                      disabled={isPending}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -72,6 +81,7 @@ const AdminLogin = ({ schema, defaultValues }) => {
                         {...field}
                         type={showPassword ? "text" : "password"}
                         value={field.value}
+                        disabled={isPending}
                       />
                     </FormControl>
                     {showPassword ? (
@@ -100,6 +110,7 @@ const AdminLogin = ({ schema, defaultValues }) => {
             />
             <Button
               type="submit"
+              disabled={isPending}
               className="px-8 py-3 text-base rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300 w-full bg-transparent hover:bg-transparent"
             >
               Login

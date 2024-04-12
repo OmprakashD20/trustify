@@ -37,7 +37,7 @@ const Header = ({ feature, imgStyle = "bg-top" }) => (
     <img
       src={feature}
       alt="feature_logo"
-      className={cn("w-full object-cover", imgStyle)}
+      className={cn("w-full object-cover h-44", imgStyle)}
     />
   </div>
 );

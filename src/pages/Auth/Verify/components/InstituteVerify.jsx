@@ -33,12 +33,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import UploadFile from "./UploadFile";
+import UploadFile from "@/components/UploadFile/UploadFile";
 
 import { cn } from "@/utils";
 
 const InstituteVerify = () => {
-  const { handleInstituteProofUpload } = useInstituteContext();
+  const { handleInstituteProofUpload, institute } = useInstituteContext();
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showSkipDialog, setShowSkipDialog] = useState(false);
   const [proofUrls, setProofUrls] = useState([]);
@@ -137,12 +137,13 @@ const InstituteVerify = () => {
                   <DialogTitle className="text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-semibold">
                     Upload your files
                   </DialogTitle>
-                  <DialogDescription className="text-center">
-                    The only file upload you will ever need
-                  </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 pt-4">
-                  <UploadFile setProofUrls={setProofUrls} />
+                  <UploadFile
+                    setUrls={setProofUrls}
+                    path={institute.name}
+                    tag={"Institute Proof"}
+                  />
                 </div>
                 <DialogFooter className="sm:justify-end">
                   <DialogClose asChild>

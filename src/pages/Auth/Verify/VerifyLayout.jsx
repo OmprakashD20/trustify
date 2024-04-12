@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useInstituteContext } from "@/context/InstituteContext";
 
@@ -9,11 +9,15 @@ import InstituteVerify from "./components/InstituteVerify";
 
 const VerifyLayout = () => {
   const { auth } = useInstituteContext();
+  const navigate = useNavigate();
 
   if (!auth) {
     toast.error("Login to access this page");
-    return <Navigate to="/" />;
+    navigate("/", {
+      replace: true,
+    });
   }
+
   return (
     <div className="pt-24 lg:pt-0 pb-10 h-[100dvh] flex items-center justify-center lg:grid lg:grid-cols-2 overflow-hidden">
       <img

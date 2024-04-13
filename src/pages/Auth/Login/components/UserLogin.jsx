@@ -67,11 +67,9 @@ const UserLogin = ({ schema, defaultValues }) => {
                 <FormItem className={cn("relative")}>
                   <div className="flex items-center justify-between">
                     <FormLabel>Password</FormLabel>
-                    <Button variant="link" type="button" className="group">
-                      <span className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-semibold group-hover:underline decoration-indigo-600">
-                        Forgot your password?
-                      </span>
-                    </Button>
+                    <span className="text-sm bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-semibold group-hover:underline decoration-indigo-600">
+                      Forgot your password?
+                    </span>
                   </div>
                   <div className="flex items-center justify-between gap-x-2">
                     <FormControl>

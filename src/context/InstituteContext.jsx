@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 
 //api
 import {
+  apiAddCertificateFormat,
   apiInstituteRegister,
   apiInstituteLogin,
   apiInstituteVerifyEmail,
@@ -22,7 +23,7 @@ import { useAppContext } from "./AppContext";
 export const InstituteContext = React.createContext();
 
 export const InstituteProvider = ({ children }) => {
-  const { setUserType } = useAppContext();
+  const { setUserType, setIsLoading } = useAppContext();
   const [auth, setAuth] = useState(false);
   const [institute, setInstitute] = useState({
     name: "",
@@ -31,7 +32,7 @@ export const InstituteProvider = ({ children }) => {
     phone: "",
     proof: [],
     templates: [],
-    certificateFormat: [],
+    certificateFormats: [],
     isApproved: false,
     isEmailVerified: false,
   });
@@ -44,6 +45,8 @@ export const InstituteProvider = ({ children }) => {
     const token = Cookies.get("token");
 
     if (!token) return;
+
+    setIsLoading(true);
 
     apiInstituteDetails()
       .then((data) => {
@@ -64,7 +67,8 @@ export const InstituteProvider = ({ children }) => {
           isApproved: false,
           isEmailVerified: false,
         });
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   //registration
@@ -177,7 +181,7 @@ export const InstituteProvider = ({ children }) => {
 
   //send reset password link
   const handleInstituteForgotPassword = async (data) => {
-    return toast.promise(apiInstituteForgotPassword({ ...data }), {
+    toast.promise(apiInstituteForgotPassword({ ...data }), {
       loading: "Sending reset link...",
       success: (message) => message,
       error: (err) => {
@@ -214,6 +218,20 @@ export const InstituteProvider = ({ children }) => {
     });
   };
 
+  //add certificate format
+  const handleAddCertificateFormat = async (data) => {
+    toast.promise(apiAddCertificateFormat({ ...data }), {
+      loading: "Adding...",
+      success: (message) => {
+        refreshInstitute();
+        return message;
+      },
+      error: (err) => {
+        return typeof err === "object" ? "Something went wrong..." : err;
+      },
+    });
+  };
+
   useEffect(() => {
     refreshInstitute();
   }, [auth]);
@@ -234,6 +252,7 @@ export const InstituteProvider = ({ children }) => {
         handleInstituteForgotPassword,
         handleInstituteResetPassword,
         handleInstituteUploadCertificateTemplate,
+        handleAddCertificateFormat,
       }}
     >
       {children}

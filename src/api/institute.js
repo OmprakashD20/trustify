@@ -14,12 +14,10 @@ export const apiInstituteDetails = async () => {
       phone,
       proof,
       templates,
-      certificateFormat,
+      certificateFormats,
       isApproved,
       isEmailVerified,
     } = response.data;
-
-    console.log(response.data);
 
     const institute = {
       name,
@@ -28,7 +26,7 @@ export const apiInstituteDetails = async () => {
       phone,
       proof,
       templates,
-      certificateFormat,
+      certificateFormats,
       isApproved,
       isEmailVerified,
     };
@@ -58,6 +56,20 @@ export const apiUploadProof = async (data) => {
 export const apiUploadCertificateTemplate = async (data) => {
   try {
     const response = await api.post(`${url}/upload-template`, data);
+
+    const { message } = response.data;
+
+    return message;
+  } catch (error) {
+    if (error.response) throw error.response.data.error;
+    throw error;
+  }
+};
+
+//add certificate format
+export const apiAddCertificateFormat = async (data) => {
+  try {
+    const response = await api.post(`${url}/add-certificate-format`, data);
 
     const { message } = response.data;
 

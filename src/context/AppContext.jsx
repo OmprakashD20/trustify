@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import { useLocation, useNavigate } from "react-router";
-
-import { useInstituteContext } from "@/context/InstituteContext";
-import toast from "react-hot-toast";
+import { useLocation } from "react-router";
 
 export const AppContext = React.createContext();
 
@@ -13,7 +9,6 @@ export const AppProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState("/");
 
   let location = useLocation();
-  const navigate = useNavigate();
   useEffect(() => {
     setCurrentPage(location ? location.pathname : "/");
   }, [location]);

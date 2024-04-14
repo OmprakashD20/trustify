@@ -39,14 +39,12 @@ const UploadTemplate = () => {
 
   const openUploadDialog = (value) => setShowUploadDialog(value);
 
-  const onUploadTemplates = async () => {
+  const onUploadTemplates = () => {
     setIsPending(true);
     handleInstituteUploadCertificateTemplate(templateUrls);
     setTemplateUrls([]);
     setIsPending(false);
   };
-
-  console.log(institute);
 
   const breadcrumbItems = {
     previousPages: [

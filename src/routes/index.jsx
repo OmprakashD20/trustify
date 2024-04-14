@@ -11,6 +11,7 @@ import VerifyLayout from "@/pages/Auth/Verify/VerifyLayout";
 import ForgotPasswordLayout from "@/pages/Auth/ForgotPassword/ForgotPasswordLayout";
 import ResetPasswordLayout from "@/pages/Auth/ResetPassword/ResetPasswordLayout";
 import UploadTemplate from "@/pages/Institute/Template/UploadTemplate";
+import AddCertificateFormat from "@/pages/Institute/CertificateFormat/AddCertificateFormat";
 
 const AppRoutes = () => {
   return (
@@ -31,6 +32,10 @@ const AppRoutes = () => {
         element={<ResetPasswordLayout />}
       />
       <Route path="/institute/upload-template" element={<UploadTemplate />} />
+      <Route
+        path="/institute/add-certificate-format"
+        element={<AddCertificateFormat />}
+      />
     </Routes>
   );
 };

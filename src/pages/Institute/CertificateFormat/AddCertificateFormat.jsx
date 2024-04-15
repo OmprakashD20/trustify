@@ -17,7 +17,12 @@ import CertificateFormatForm from "./components/CertificateFormatForm";
 import PreviewCertificateFormat from "./components/PreviewCertificateFormat";
 
 const AddCertificateFormat = () => {
-  const { auth, institute, handleAddCertificateFormat } = useInstituteContext();
+  const {
+    auth,
+    institute,
+    handleInstituteAddCertificateFormat,
+    handleInstituteDeleteCertificateFormat,
+  } = useInstituteContext();
   const [certificateFormat, setCertificateFormat] = useState({
     name: "",
     title: "",
@@ -44,8 +49,13 @@ const AddCertificateFormat = () => {
   };
 
   const handleSubmit = async () => {
-    await handleAddCertificateFormat(certificateFormat);
+    await handleInstituteAddCertificateFormat(certificateFormat);
   };
+
+  const deleteCertificateFormat = async (certificateFormatId) =>
+    await handleInstituteDeleteCertificateFormat({
+      certificateFormatId,
+    });
 
   if (!auth) {
     toast.error("Login to access this page");
@@ -70,6 +80,7 @@ const AddCertificateFormat = () => {
             <CardContent className="py-0 px-6 max-lg:mb-6">
               <PreviewCertificateFormat
                 certificateFormats={institute.certificateFormats}
+                deleteCertificateFormat={deleteCertificateFormat}
               />
             </CardContent>
           </Card>

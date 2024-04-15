@@ -66,6 +66,23 @@ export const apiUploadCertificateTemplate = async (data) => {
   }
 };
 
+//remove a certificate template
+export const apiRemoveCertificateTemplate = async (data) => {
+  try {
+    console.log(data.templateUrl);
+    const response = await api.delete(
+      `${url}/remove-template?templateUrl=${data.templateUrl}`
+    );
+
+    const { message } = response.data;
+
+    return message;
+  } catch (error) {
+    if (error.response) throw error.response.data.error;
+    throw error;
+  }
+};
+
 //add certificate format
 export const apiAddCertificateFormat = async (data) => {
   try {
@@ -75,6 +92,23 @@ export const apiAddCertificateFormat = async (data) => {
 
     return message;
   } catch (error) {
+    if (error.response) throw error.response.data.error;
+    throw error;
+  }
+};
+
+//delete a certificate format
+export const apiDeleteCertificateFormat = async (data) => {
+  try {
+    const response = await api.delete(
+      `${url}/delete-certificate-format?certificateFormatId=${data.certificateFormatId}`
+    );
+
+    const { message } = response.data;
+
+    return message;
+  } catch (error) {
+    console.log(error);
     if (error.response) throw error.response.data.error;
     throw error;
   }

@@ -13,6 +13,8 @@ import {
   apiInstituteForgotPassword,
   apiInstituteResetPassword,
   apiUploadCertificateTemplate,
+  apiRemoveCertificateTemplate,
+  apiDeleteCertificateFormat,
 } from "@/api";
 
 import { OTP } from "@/constants";
@@ -218,8 +220,22 @@ export const InstituteProvider = ({ children }) => {
     });
   };
 
+  //remove a certificate template
+  const handleInstituteRemoveCertificateTemplate = async (data) => {
+    return toast.promise(apiRemoveCertificateTemplate({ ...data }), {
+      loading: "Removing...",
+      success: (message) => {
+        refreshInstitute();
+        return message;
+      },
+      error: (err) => {
+        return typeof err === "object" ? "Something went wrong..." : err;
+      },
+    });
+  };
+
   //add certificate format
-  const handleAddCertificateFormat = async (data) => {
+  const handleInstituteAddCertificateFormat = async (data) => {
     toast.promise(apiAddCertificateFormat({ ...data }), {
       loading: "Adding...",
       success: (message) => {
@@ -227,6 +243,21 @@ export const InstituteProvider = ({ children }) => {
         return message;
       },
       error: (err) => {
+        return typeof err === "object" ? "Something went wrong..." : err;
+      },
+    });
+  };
+
+  //delete a certificate format
+  const handleInstituteDeleteCertificateFormat = async (data) => {
+    return toast.promise(apiDeleteCertificateFormat({ ...data }), {
+      loading: "Deleting...",
+      success: (message) => {
+        refreshInstitute();
+        return message;
+      },
+      error: (err) => {
+        console.log(err);
         return typeof err === "object" ? "Something went wrong..." : err;
       },
     });
@@ -252,7 +283,9 @@ export const InstituteProvider = ({ children }) => {
         handleInstituteForgotPassword,
         handleInstituteResetPassword,
         handleInstituteUploadCertificateTemplate,
-        handleAddCertificateFormat,
+        handleInstituteRemoveCertificateTemplate,
+        handleInstituteAddCertificateFormat,
+        handleInstituteDeleteCertificateFormat,
       }}
     >
       {children}

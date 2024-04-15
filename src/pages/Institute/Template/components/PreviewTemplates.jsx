@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
-const PreviewTemplates = ({ templates }) => {
+const PreviewTemplates = ({ templates, removeCertificateTemplate }) => {
   if (templates.length === 0)
     return (
       <div className="flex justify-center items-center h-40">
@@ -70,7 +70,7 @@ const PreviewTemplates = ({ templates }) => {
                         </AlertDialogCancel>
                         <AlertDialogAction
                           className="text-base rounded dark:bg-red-600/30 dark:border-red-800/40 border-red-800/40 border-2 dark:text-gray-50 text-red-600 dark:hover:bg-red-600/60 transition-colors duration-300 w-28 bg-transparent hover:bg-red-300/60"
-                          onClick={() => {}}
+                          onClick={() => removeCertificateTemplate(template)}
                         >
                           Continue
                         </AlertDialogAction>

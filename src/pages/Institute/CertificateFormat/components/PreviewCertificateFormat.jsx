@@ -1,20 +1,8 @@
 import { LayoutTemplate, Trash } from "lucide-react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
@@ -29,7 +17,10 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
-const PreviewCertificateFormat = ({ certificateFormats }) => {
+const PreviewCertificateFormat = ({
+  certificateFormats,
+  deleteCertificateFormat,
+}) => {
   if (certificateFormats.length === 0)
     return (
       <div className="flex justify-center items-center h-40">
@@ -53,21 +44,20 @@ const PreviewCertificateFormat = ({ certificateFormats }) => {
                 </CardTitle>
                 <CardDescription>{certificateFormat.name}</CardDescription>
               </CardHeader>
-              <CardContent className="-translate-x-4 opacity-0 transition-all duration-500 group-hover:translate-x-2 group-hover:opacity-100 translate-y-3">
-                <div className="flex items-center justify-between">
-                  <Trash
-                    size={20}
-                    className="dark:text-red-600/50 text-red-600"
-                  />
-                </div>
-              </CardContent>
             </Card>
           </DialogTrigger>
           <DialogContent className="p-4 font-spaceGrotesk">
             <DialogHeader>
-              <DialogTitle className="text-indigo-500 text-lg flex items-center gap-x-1">
-                <LayoutTemplate size={20} />
-                {certificateFormat.name}
+              <DialogTitle className="text-indigo-500 text-lg flex items-center gap-x-2">
+                <span className="flex items-center justify-center gap-x-1">
+                  <LayoutTemplate size={20} />
+                  {certificateFormat.name}
+                </span>
+                <Trash
+                  size={20}
+                  className="dark:text-red-600/50 text-red-600 cursor-pointer"
+                  onClick={() => deleteCertificateFormat(certificateFormat.id)}
+                />
               </DialogTitle>
               <DialogDescription>
                 <div className="flex flex-col items-start gap-y-2">

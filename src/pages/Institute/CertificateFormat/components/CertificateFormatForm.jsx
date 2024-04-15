@@ -445,7 +445,7 @@ const CertificateFormatFormActions = ({ handleSubmit, hasError }) => {
               }
             }}
           >
-            {isLastStep ? "Finish" : isOptionalStep ? "Skip" : "Next"}
+            {isLastStep ? "Add" : isOptionalStep ? "Skip" : "Next"}
           </Button>
         </>
       )}

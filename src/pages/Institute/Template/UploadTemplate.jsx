@@ -29,8 +29,12 @@ import PreviewTemplates from "./components/PreviewTemplates";
 import { cn } from "@/utils";
 
 const UploadTemplate = () => {
-  const { auth, institute, handleInstituteUploadCertificateTemplate } =
-    useInstituteContext();
+  const {
+    auth,
+    institute,
+    handleInstituteUploadCertificateTemplate,
+    handleInstituteRemoveCertificateTemplate,
+  } = useInstituteContext();
 
   const navigate = useNavigate();
   const [showUploadDialog, setShowUploadDialog] = useState(false);
@@ -43,6 +47,14 @@ const UploadTemplate = () => {
     setIsPending(true);
     handleInstituteUploadCertificateTemplate(templateUrls);
     setTemplateUrls([]);
+    setIsPending(false);
+  };
+
+  const removeCertificateTemplate = async (templateUrl) => {
+    setIsPending(true);
+    await handleInstituteRemoveCertificateTemplate({
+      templateUrl,
+    });
     setIsPending(false);
   };
 
@@ -87,7 +99,10 @@ const UploadTemplate = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <PreviewTemplates templates={institute.templates || []} />
+              <PreviewTemplates
+                templates={institute.templates || []}
+                removeCertificateTemplate={removeCertificateTemplate}
+              />
             </CardContent>
           </Card>
           <Button

@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 
 import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 
+import { useUserContext } from "@/context/UserContext";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,15 +27,18 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/utils";
 
 const UserLogin = ({ schema, defaultValues }) => {
+  const { handleUserLogin } = useUserContext();
   const [showPassword, setShowPassword] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues,
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    form.reset();
+  const onSubmit = async (data) => {
+    setIsPending(true);
+    await handleUserLogin(data);
+    setIsPending(false);
   };
 
   return (

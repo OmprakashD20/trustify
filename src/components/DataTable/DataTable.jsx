@@ -5,6 +5,7 @@ import {
   useReactTable,
   getPaginationRowModel,
   getFilteredRowModel,
+  getSortedRowModel,
 } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ import {
 import { cn } from "@/utils";
 
 const DataTable = ({ className, columns, data }) => {
+  const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const table = useReactTable({
     data,
@@ -28,21 +30,25 @@ const DataTable = ({ className, columns, data }) => {
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     state: {
+      sorting,
       columnFilters,
     },
   });
   const tableHeaderStyle =
-    "w-[100px] text-center text-indigo-600 dark:text-indigo-600 font-spaceGrotesk";
-  const tableBodyStyle = "w-[270px] text-center font-spaceGrotesk";
+    "text-center text-indigo-600 dark:text-indigo-600 font-spaceGrotesk";
+  const tableBodyStyle =
+    "text-center font-spaceGrotesk dark:text-neutral-100 text-neutral-900";
 
   return (
     <div className={cn("flex flex-col w-3/4", className)}>
-      <div className={cn("rounded-md border-2 border-indigo-600/35 w-full")}>
+      <div className={cn("rounded-md border-2 border-neutral-600/35 w-full")}>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="border-neutral-600/35">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead className={cn(tableHeaderStyle)} key={header.id}>
@@ -86,16 +92,14 @@ const DataTable = ({ className, columns, data }) => {
         </Table>
         <div className="flex items-center justify-end space-x-2 py-4 mr-2">
           <Button
-            className="rounded-lg border-2 border-indigo-500/50 bg-black/50 px-4 py-2 font-medium dark:text-neutral-100 transition-colors hover:bg-slate-950/60 font-spaceGrotesk disabled:dark:text-indigo-600 disabled:bg-neutral-200"
-            variant="outline"
+            className="px-3 py-3 text-sm rounded dark:bg-indigo-600/30 bg-indigo-600/30 hover:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
-            className="rounded-lg border-2 border-indigo-500/50 bg-black/50 px-4 py-2 font-medium dark:text-neutral-100 transition-colors hover:bg-slate-950/60 font-spaceGrotesk disabled:dark:text-indigo-600 disabled:bg-neutral-200"
-            variant="outline"
+            className="px-3 py-3 text-sm rounded dark:bg-indigo-600/30 bg-indigo-600/30 hover:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >

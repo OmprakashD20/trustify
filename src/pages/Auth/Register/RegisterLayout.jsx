@@ -47,11 +47,11 @@ const RegisterLayout = () => {
   }
 
   return (
-    <div className="pt-24 lg:pt-0 pb-10 h-[100dvh] flex items-center justify-center lg:grid lg:grid-cols-2 overflow-hidden">
+    <div className="pt-24 lg:pt-0 max-lg:pb-10 h-[100dvh] flex items-center justify-center lg:grid lg:grid-cols-2 overflow-hidden">
       <img
         src={bgImage}
         alt="Register Image"
-        className="hidden lg:block bg-fixed object-cover dark:brightness-[0.2] dark:grayscale"
+        className="hidden lg:block bg-fixed object-cover dark:brightness-[0.2] dark:grayscale h-full"
       />
       <div className="flex items-center justify-center w-full mx-4">
         {pathname === "/register/institute" && (

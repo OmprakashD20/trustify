@@ -9,8 +9,10 @@ import "@/index.css";
 //context providers
 import { ThemeProvider } from "@/providers/ThemeProvider.jsx";
 import { AppProvider } from "@/context/AppContext";
+import { UserProvider } from "@/context/UserContext";
 import { InstituteProvider } from "@/context/InstituteContext";
 import { AdminProvider } from "@/context/AdminContext";
+
 import { ScrollToTop } from "@/utils";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -52,7 +54,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <AppProvider>
         <AdminProvider>
           <InstituteProvider>
-            <App />
+            <UserProvider>
+              <App />
+            </UserProvider>
           </InstituteProvider>
         </AdminProvider>
       </AppProvider>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
 import { LogOut } from "lucide-react";
@@ -9,6 +9,7 @@ import { Logo, navItems } from "@/constants";
 import { useAppContext } from "@/context/AppContext";
 import { useAdminContext } from "@/context/AdminContext";
 import { useInstituteContext } from "@/context/InstituteContext";
+import { useUserContext } from "@/context/UserContext";
 
 import ThemeSwitcher from "./ThemeSwitcher";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ const Navbar = () => {
   const { userType, currentPage } = useAppContext();
   const { handleAdminLogout } = useAdminContext();
   const { handleInstituteLogout } = useInstituteContext();
+  const { handleUserLogout } = useUserContext();
   const [mounted, setMounted] = useState(false);
 
   const navigate = useNavigate();
@@ -32,20 +34,20 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    //todo: handle logout for the user
     if (userType === "institute") handleInstituteLogout();
     if (userType === "admin") handleAdminLogout();
+    if (userType === "user") handleUserLogout();
   };
 
   if (!mounted) return null;
   return (
     <div className="mx-4 my-3 flex justify-between">
-      <div className="flex gap-x-2 items-center">
+      <Link to="/" className="flex gap-x-2 items-center">
         <img src={Logo} alt="Trustify Logo" className="size-9" />
         <p className="bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent font-semibold text-xl">
           Trustify
         </p>
-      </div>
+      </Link>
       <div className="flex items-center gap-x-2">
         <div className="flex gap-x-2 items-center border border-neutral-300 rounded-md text-neutral-900 bg-neutral-100 py-0.5 space-x-2 px-2 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-400">
           {navItems.slice(0, 4).map((item) => {

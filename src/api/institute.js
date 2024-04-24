@@ -15,6 +15,7 @@ export const apiInstituteDetails = async () => {
       proof,
       templates,
       certificateFormats,
+      users,
       isApproved,
       isEmailVerified,
     } = response.data;
@@ -27,6 +28,7 @@ export const apiInstituteDetails = async () => {
       proof,
       templates,
       certificateFormats,
+      users,
       isApproved,
       isEmailVerified,
     };
@@ -67,11 +69,10 @@ export const apiUploadCertificateTemplate = async (data) => {
 };
 
 //remove a certificate template
-export const apiRemoveCertificateTemplate = async (data) => {
+export const apiDeleteCertificateTemplate = async (data) => {
   try {
-    console.log(data.templateUrl);
     const response = await api.delete(
-      `${url}/remove-template?templateUrl=${data.templateUrl}`
+      `${url}/delete-template?templateUrl=${data.templateUrl}`
     );
 
     const { message } = response.data;
@@ -108,7 +109,51 @@ export const apiDeleteCertificateFormat = async (data) => {
 
     return message;
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    if (error.response) throw error.response.data.error;
+    throw error;
+  }
+};
+
+//add user to the institution
+export const apiAddUser = async (data) => {
+  try {
+    const response = await api.post(`${url}/add-user`, data);
+
+    const { message } = response.data;
+
+    return message;
+  } catch (error) {
+    if (error.response) throw error.response.data.error;
+    throw error;
+  }
+};
+
+//remove a user from the institution
+export const apiRemoveUser = async (data) => {
+  try {
+    const response = await api.delete(
+      `${url}/remove-user?userId=${data.userId}`
+    );
+
+    const { message } = response.data;
+
+    return message;
+  } catch (error) {
+    if (error.response) throw error.response.data.error;
+    throw error;
+  }
+};
+
+//generate certificate for the user with the selected certificate format
+export const apiGenerateCertificate = async (data) => {
+  try {
+    const response = await api.post(`${url}/generate-certificate`, data);
+
+    const { message } = response.data;
+
+    return message;
+  } catch (error) {
     if (error.response) throw error.response.data.error;
     throw error;
   }

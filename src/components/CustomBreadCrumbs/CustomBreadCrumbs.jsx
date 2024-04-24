@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 
 import { Slash } from "lucide-react";
@@ -16,8 +17,8 @@ const CustomBreadCrumbs = ({ previousPages = [], currentPage = "" }) => {
     <Breadcrumb>
       <BreadcrumbList>
         {previousPages.map((previousPage, index) => (
-          <>
-            <BreadcrumbItem key={index}>
+          <React.Fragment key={index}>
+            <BreadcrumbItem>
               <BreadcrumbLink>
                 <Link to={previousPage.to}>{previousPage.name}</Link>
               </BreadcrumbLink>
@@ -25,7 +26,7 @@ const CustomBreadCrumbs = ({ previousPages = [], currentPage = "" }) => {
             <BreadcrumbSeparator>
               <Slash />
             </BreadcrumbSeparator>
-          </>
+          </React.Fragment>
         ))}
         <BreadcrumbItem>
           <BreadcrumbPage>{currentPage}</BreadcrumbPage>

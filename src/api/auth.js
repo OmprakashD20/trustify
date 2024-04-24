@@ -108,7 +108,7 @@ export const apiInstituteVerifyEmail = async (data) => {
 
     return { institute, message };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     if (error.response) throw error.response.data.error;
     throw error;
   }
@@ -140,6 +140,34 @@ export const apiInstituteResetPassword = async ({ data, token }) => {
 
     return message;
   } catch (error) {
+    if (error.response) throw error.response.data.error;
+    throw error;
+  }
+};
+
+//user login
+export const apiUserLogin = async (data) => {
+  try {
+    const response = await api.post(`${url}login/user`, data);
+
+    const {
+      id,
+      name,
+      email,
+      phone,
+      Certificates,
+      Institution,
+      token,
+      message,
+    } = response.data;
+
+    Cookies.set("token", token);
+
+    const user = { id, name, email, phone, Certificates, Institution };
+
+    return { user, message };
+  } catch (error) {
+    console.log(error);
     if (error.response) throw error.response.data.error;
     throw error;
   }

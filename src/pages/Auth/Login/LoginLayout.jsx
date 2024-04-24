@@ -71,7 +71,7 @@ const LoginLayout = () => {
   }
 
   return (
-    <div className="pt-24 lg:pt-0 pb-10 h-[100dvh] flex items-center justify-center lg:grid lg:grid-cols-2 overflow-hidden">
+    <div className="pt-24 lg:pt-0 max-lg:pb-10 h-[100dvh] flex items-center justify-center lg:grid lg:grid-cols-2 overflow-hidden">
       <div className="flex items-center justify-center w-full mx-4">
         {pathname === "/login/user" && (
           <UserLogin schema={userSchema} defaultValues={userDefaultValues} />
@@ -96,7 +96,7 @@ const LoginLayout = () => {
             : Admin
         }
         alt="Login Image"
-        className="hidden lg:block object-cover dark:brightness-[0.2] dark:grayscale"
+        className="hidden lg:block object-cover dark:brightness-[0.2] dark:grayscale h-full"
       />
     </div>
   );

@@ -24,7 +24,9 @@ const PreviewCertificateFormat = ({
   if (certificateFormats.length === 0)
     return (
       <div className="flex justify-center items-center h-40">
-        <p className="text-gray-400">No certificate formats added yet.</p>
+        <p className="text-neutral-900 dark:text-gray-400">
+          No certificate formats added yet.
+        </p>
       </div>
     );
 

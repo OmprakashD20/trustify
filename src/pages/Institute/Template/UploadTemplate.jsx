@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 
 import { useInstituteContext } from "@/context/InstituteContext";
 
@@ -30,13 +28,11 @@ import { cn } from "@/utils";
 
 const UploadTemplate = () => {
   const {
-    auth,
     institute,
     handleInstituteUploadCertificateTemplate,
-    handleInstituteRemoveCertificateTemplate,
+    handleInstituteDeleteCertificateTemplate,
   } = useInstituteContext();
 
-  const navigate = useNavigate();
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [templateUrls, setTemplateUrls] = useState([]);
   const [isPending, setIsPending] = useState(false);
@@ -50,9 +46,9 @@ const UploadTemplate = () => {
     setIsPending(false);
   };
 
-  const removeCertificateTemplate = async (templateUrl) => {
+  const deleteCertificateTemplate = async (templateUrl) => {
     setIsPending(true);
-    await handleInstituteRemoveCertificateTemplate({
+    await handleInstituteDeleteCertificateTemplate({
       templateUrl,
     });
     setIsPending(false);
@@ -72,14 +68,8 @@ const UploadTemplate = () => {
     currentPage: "Upload Template",
   };
 
-  if (!auth) {
-    toast.error("Login to access this page");
-    navigate("/", {
-      replace: true,
-    });
-  }
   return (
-    <div className="pt-20 pb-6 h-[100dvh] flex flex-col gap-y-2 mx-6">
+    <div className="flex flex-col gap-y-2 mx-6">
       <CustomBreadCrumbs {...breadcrumbItems} />
       <Card className="h-full bg-transparent border-none dark:border-none dark:bg-transparent">
         <CardHeader className="py-4 px-2">
@@ -101,7 +91,7 @@ const UploadTemplate = () => {
             <CardContent>
               <PreviewTemplates
                 templates={institute.templates || []}
-                removeCertificateTemplate={removeCertificateTemplate}
+                deleteCertificateTemplate={deleteCertificateTemplate}
               />
             </CardContent>
           </Card>

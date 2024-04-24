@@ -12,6 +12,7 @@ import {
 import { useAppContext } from "@/context/AppContext";
 import { useAdminContext } from "@/context/AdminContext";
 import { useInstituteContext } from "@/context/InstituteContext";
+import { useUserContext } from "@/context/UserContext";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -41,6 +42,7 @@ const NavSheet = () => {
   const { userType, currentPage } = useAppContext();
   const { handleAdminLogout } = useAdminContext();
   const { handleInstituteLogout } = useInstituteContext();
+  const { handleUserLogout } = useUserContext();
   const [isOpened, setIsOpened] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -53,9 +55,9 @@ const NavSheet = () => {
   };
 
   const handleLogout = () => {
-    //todo: handle logout for the user
     if (userType === "institute") handleInstituteLogout();
     if (userType === "admin") handleAdminLogout();
+    if (userType === "user") handleUserLogout();
   };
 
   if (!mounted) return null;
@@ -91,7 +93,7 @@ const NavSheet = () => {
         <SheetTrigger>
           <HamburgerMenuIcon className="text-indigo-500 dark:text-indigo-500 size-10 p-2 rounded-md border dark:border-neutral-800" />
         </SheetTrigger>
-        <SheetContent side="top" className="h-[60%] p-0 flex flex-col gap-y-0">
+        <SheetContent side="top" className="h-[70%] p-0 flex flex-col gap-y-0">
           <SheetHeader className="px-2 py-3 font-spaceGrotesk">
             <SheetTitle>
               <div className="flex gap-x-2 items-center">
@@ -154,7 +156,7 @@ const NavSheet = () => {
                   (userType === "user" && currentPage !== "/user") ||
                   (userType === "admin" && currentPage !== "/admin")) && (
                   <div
-                    className="px-4 py-[5px] font-medium rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/50 transition-colors duration-300"
+                    className="px-4 py-[5px] font-medium rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/50 transition-colors duration-300 font-spaceGrotesk"
                     onClick={navigateToDashboard}
                   >
                     <div className="flex gap-x-2 justify-center items-center">

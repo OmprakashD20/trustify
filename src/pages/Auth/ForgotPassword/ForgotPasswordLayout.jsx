@@ -26,7 +26,7 @@ const ForgotPasswordLayout = () => {
   });
 
   return (
-    <div className="pt-24 lg:pt-0 pb-10 h-[100dvh] flex items-center justify-center lg:grid lg:grid-cols-2 overflow-hidden">
+    <div className="pt-24 lg:pt-0 max-lg:pb-10 h-[100dvh] flex items-center justify-center lg:grid lg:grid-cols-2 overflow-hidden">
       <div className="flex items-center justify-center w-full mx-4">
         <Card className="w-full md:max-w-sm">
           <CardHeader className="py-4">
@@ -47,7 +47,7 @@ const ForgotPasswordLayout = () => {
       <img
         src={ForgotPassword}
         alt="Forgot Password Image"
-        className="hidden lg:block object-cover dark:brightness-[0.2] dark:grayscale"
+        className="hidden lg:block object-cover dark:brightness-[0.2] dark:grayscale h-full"
       />
     </div>
   );

@@ -13,8 +13,11 @@ import {
   apiInstituteForgotPassword,
   apiInstituteResetPassword,
   apiUploadCertificateTemplate,
-  apiRemoveCertificateTemplate,
+  apiDeleteCertificateTemplate,
   apiDeleteCertificateFormat,
+  apiAddUser,
+  apiGenerateCertificate,
+  apiRemoveUser,
 } from "@/api";
 
 import { OTP } from "@/constants";
@@ -35,6 +38,7 @@ export const InstituteProvider = ({ children }) => {
     proof: [],
     templates: [],
     certificateFormats: [],
+    users: [],
     isApproved: false,
     isEmailVerified: false,
   });
@@ -46,31 +50,33 @@ export const InstituteProvider = ({ children }) => {
   const refreshInstitute = async () => {
     const token = Cookies.get("token");
 
-    if (!token) return;
-
     setIsLoading(true);
 
-    apiInstituteDetails()
-      .then((data) => {
-        setUserType("institute");
-        setInstitute(data);
-        setAuth(true);
-      })
-      .catch((err) => {
-        console.log(err);
-        Cookies.remove("token");
-        setAuth(false);
-        setInstitute({
-          name: "",
-          code: "",
-          email: "",
-          phone: "",
-          proof: [],
-          isApproved: false,
-          isEmailVerified: false,
-        });
-      })
-      .finally(() => setIsLoading(false));
+    if (token) {
+      apiInstituteDetails()
+        .then((data) => {
+          setAuth(true);
+          setInstitute(data);
+          setUserType("institute");
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      Cookies.remove("token");
+      setAuth(false);
+      setInstitute({
+        name: "",
+        code: "",
+        email: "",
+        phone: "",
+        proof: [],
+        templates: [],
+        certificateFormats: [],
+        users: [],
+        isApproved: false,
+        isEmailVerified: false,
+      });
+      setIsLoading(false);
+    }
   };
 
   //registration
@@ -123,7 +129,9 @@ export const InstituteProvider = ({ children }) => {
   const handleInstituteLogout = async () => {
     Cookies.remove("token");
     toast.success("Logged out successfully");
-    navigate("/");
+    navigate("/", {
+      replace: true,
+    });
     setAuth(false);
     setInstitute({
       name: "",
@@ -220,10 +228,10 @@ export const InstituteProvider = ({ children }) => {
     });
   };
 
-  //remove a certificate template
-  const handleInstituteRemoveCertificateTemplate = async (data) => {
-    return toast.promise(apiRemoveCertificateTemplate({ ...data }), {
-      loading: "Removing...",
+  //delete a certificate template
+  const handleInstituteDeleteCertificateTemplate = async (data) => {
+    return toast.promise(apiDeleteCertificateTemplate({ ...data }), {
+      loading: "Deleting...",
       success: (message) => {
         refreshInstitute();
         return message;
@@ -257,10 +265,59 @@ export const InstituteProvider = ({ children }) => {
         return message;
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
         return typeof err === "object" ? "Something went wrong..." : err;
       },
     });
+  };
+
+  //add a user to the institute
+  const handleInstituteAddUser = async (data) => {
+    return toast.promise(apiAddUser({ ...data }), {
+      loading: "Adding user...",
+      success: (message) => {
+        refreshInstitute();
+        return message;
+      },
+      error: (err) => {
+        return typeof err === "object" ? "Something went wrong..." : err;
+      },
+    });
+  };
+
+  //remove a user from the institute
+  const handleInstituteRemoveUser = async (data) => {
+    toast.promise(apiRemoveUser({ ...data }), {
+      loading: "Removing user...",
+      success: (message) => {
+        refreshInstitute();
+        return message;
+      },
+      error: (err) => {
+        return typeof err === "object" ? "Something went wrong..." : err;
+      },
+    });
+  };
+
+  //generate certificate for the user with the selected certificate format
+  const handleInstituteGenerateCertificate = async (data) => {
+    //todo: generate certificate hashcode using blockchain
+    toast.promise(
+      apiGenerateCertificate({
+        ...data,
+        certificateHashcode: "Will generate using blockchain later",
+      }),
+      {
+        loading: "Generating Certificate...",
+        success: (message) => {
+          refreshInstitute();
+          return message;
+        },
+        error: (err) => {
+          return typeof err === "object" ? "Something went wrong..." : err;
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -283,9 +340,12 @@ export const InstituteProvider = ({ children }) => {
         handleInstituteForgotPassword,
         handleInstituteResetPassword,
         handleInstituteUploadCertificateTemplate,
-        handleInstituteRemoveCertificateTemplate,
+        handleInstituteDeleteCertificateTemplate,
         handleInstituteAddCertificateFormat,
         handleInstituteDeleteCertificateFormat,
+        handleInstituteAddUser,
+        handleInstituteGenerateCertificate,
+        handleInstituteRemoveUser,
       }}
     >
       {children}

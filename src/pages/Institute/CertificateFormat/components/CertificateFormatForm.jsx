@@ -377,7 +377,7 @@ const SignerDetailsForm = ({
                   />
                 </FormControl>
                 <FormDescription>
-                  Upload the drive link of the signature image.
+                  Upload the drive link of the signature image in PNG Format. The signature must be in black color.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

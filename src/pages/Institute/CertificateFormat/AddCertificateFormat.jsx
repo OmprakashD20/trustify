@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 
 import { useInstituteContext } from "@/context/InstituteContext";
 
@@ -18,7 +16,6 @@ import PreviewCertificateFormat from "./components/PreviewCertificateFormat";
 
 const AddCertificateFormat = () => {
   const {
-    auth,
     institute,
     handleInstituteAddCertificateFormat,
     handleInstituteDeleteCertificateFormat,
@@ -33,7 +30,6 @@ const AddCertificateFormat = () => {
     signerDesignation: "",
     signatureUrl: "",
   });
-  const navigate = useNavigate();
   const breadcrumbItems = {
     previousPages: [
       {
@@ -56,15 +52,8 @@ const AddCertificateFormat = () => {
     await handleInstituteDeleteCertificateFormat({
       certificateFormatId,
     });
-
-  if (!auth) {
-    toast.error("Login to access this page");
-    navigate("/", {
-      replace: true,
-    });
-  }
   return (
-    <div className="pt-20 flex flex-col gap-y-[5px] lg:h-[100dvh] gap-x-4 mx-6 dark:bg-black">
+    <div className="flex flex-col gap-y-[5px] gap-x-4 mx-6 dark:bg-black">
       <CustomBreadCrumbs {...breadcrumbItems} />
       <Card className="h-full bg-transparent border-none dark:border-none dark:bg-transparent">
         <CardContent className="flex lg:flex-row flex-col items-center lg:items-start justify-center lg:gap-x-12 max-md:p-0 h-full gap-y-4">
@@ -84,14 +73,23 @@ const AddCertificateFormat = () => {
               />
             </CardContent>
           </Card>
-          <CertificateFormatForm
-            templateList={
-              institute.templates?.length === 0 ? [] : institute.templates
-            }
-            certificateFormat={certificateFormat}
-            setCertificateFormat={setCertificateFormat}
-            handleSubmit={handleSubmit}
-          />
+          {institute.templates?.length === 0 ? (
+            <div className="flex justify-center items-center h-40 md:h-60">
+              <p className="text-neutral-900 dark:text-gray-400">
+                You cannot add a certificate format unless you upload atleast a
+                certificate template.
+              </p>
+            </div>
+          ) : (
+            <CertificateFormatForm
+              templateList={
+                institute.templates?.length === 0 ? [] : institute.templates
+              }
+              certificateFormat={certificateFormat}
+              setCertificateFormat={setCertificateFormat}
+              handleSubmit={handleSubmit}
+            />
+          )}
         </CardContent>
       </Card>
     </div>

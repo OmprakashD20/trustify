@@ -25,6 +25,9 @@ import UserDashboardLayout from "@/pages/User/UserDashboardLayout";
 import UserDashboard from "@/pages/User/Dashboard/UserDashboard";
 import ViewUserCertificates from "@/pages/User/Certificates/ViewCertificates";
 import ViewUserInstitutes from "@/pages/User/Institution/ViewInstitutes";
+import AdminDashboardLayout from "@/pages/Admin/AdminDashboardLayout";
+import AdminDashboard from "@/pages/Admin/Dashboard/AdminDashboard";
+import Institutes from "@/pages/Admin/Institutes/Institutes";
 
 const AppRoutes = () => {
   return (
@@ -65,6 +68,10 @@ const AppRoutes = () => {
         <Route path="/user" element={<UserDashboard />} />
         <Route path="/user/certificates" element={<ViewUserCertificates />} />
         <Route path="/user/institutes" element={<ViewUserInstitutes />} />
+      </Route>
+      <Route path="/admin" element={<AdminDashboardLayout />}>
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/institutes" element={<Institutes />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

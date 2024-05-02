@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 //api
-import { apiAdminLogin } from "@/api";
+import {
+  apiAdminLogin,
+  apiAdminInstitutionsDetails,
+  apiAdminApproveInstitutes,
+} from "@/api";
 
 import Cookies from "js-cookie";
 
@@ -12,8 +16,9 @@ import { useAppContext } from "./AppContext";
 export const AdminContext = React.createContext();
 
 export const AdminProvider = ({ children }) => {
-  const { setUserType } = useAppContext();
+  const { setUserType, setIsLoading } = useAppContext();
   const [auth, setAuth] = useState(false);
+  const [institutions, setInstitutions] = useState([]);
 
   const navigate = useNavigate();
   const ADMIN_DASHBOARD = "/";
@@ -21,20 +26,53 @@ export const AdminProvider = ({ children }) => {
   const refreshAdmin = async () => {
     const token = Cookies.get("token");
 
-    if (!token) return;
+    setIsLoading(true);
+
+    if (token) {
+      apiAdminInstitutionsDetails()
+        .then((data) => {
+          setAuth(true);
+          setInstitutions(data.institutions);
+          setUserType("admin");
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      Cookies.remove("token");
+      setAuth(false);
+      setUserType("");
+      setIsLoading(false);
+    }
   };
 
   //login
   const handleAdminLogin = async (data) => {
     toast.promise(apiAdminLogin(data), {
       loading: "Logging in...",
-      success: (message) => {
+      success: (data) => {
         setAuth(true);
-        navigate(ADMIN_DASHBOARD);
         setUserType("admin");
-        return message;
+        setInstitutions(data.institutions);
+        navigate(ADMIN_DASHBOARD);
+        return data.message;
       },
       error: (error) => {
+        return error;
+      },
+    });
+  };
+
+  //approve/reject institute
+  const handleAdminApproveInstitutes = async (data) => {
+    setIsLoading(true);
+    toast.promise(apiAdminApproveInstitutes(data), {
+      loading: data.isApproved === "true" ? "Approving..." : "Rejecting...",
+      success: (data) => {
+        refreshAdmin();
+        setIsLoading(false);
+        return data.message;
+      },
+      error: (error) => {
+        setIsLoading(false);
         return error;
       },
     });
@@ -58,8 +96,10 @@ export const AdminProvider = ({ children }) => {
       value={{
         auth,
         setAuth,
+        institutions,
         handleAdminLogin,
         handleAdminLogout,
+        handleAdminApproveInstitutes,
       }}
     >
       {children}

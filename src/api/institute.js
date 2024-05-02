@@ -8,6 +8,7 @@ export const apiInstituteDetails = async () => {
     const response = await api.get(`${url}/`);
 
     const {
+      id,
       name,
       code,
       email,
@@ -21,6 +22,7 @@ export const apiInstituteDetails = async () => {
     } = response.data;
 
     const institute = {
+      id,
       name,
       code,
       email,

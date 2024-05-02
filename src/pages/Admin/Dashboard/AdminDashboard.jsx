@@ -1,14 +1,25 @@
 import { Building2, Settings } from "lucide-react";
-import { PiCertificate } from "react-icons/pi";
+import { PiCertificate, PiFolderMinus } from "react-icons/pi";
 
-import { useUserContext } from "@/context/UserContext";
+import { useAdminContext } from "@/context/AdminContext";
 
 import CustomBreadCrumbs from "@/components/CustomBreadCrumbs/CustomBreadCrumbs";
 import CustomCard from "@/components/CustomCard/CustomCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const UserDashboard = () => {
-  const { user } = useUserContext();
+const AdminDashboard = () => {
+  const { institutions } = useAdminContext();
+
+  const [certificates, certificateFormats] = institutions.reduce(
+    (acc, curr) => {
+      acc[0] += curr.Certificate.length;
+      acc[1] += curr.CertificateFormat.length;
+      return acc;
+    },
+    [0, 0]
+  );
+
+  const totalInstitutions = institutions.length;
 
   const breadcrumbItems = {
     previousPages: [
@@ -28,9 +39,18 @@ const UserDashboard = () => {
           Certificates
         </div>
       ),
-      description: `Total Certificates: ${user.Certificates.length}`,
-      link: "/user/certificates",
-      btnText: "View Certificates",
+      description: `Total Certificates: ${certificates}`,
+      disabled: true,
+    },
+    {
+      title: (
+        <div className="flex items-center">
+          <PiFolderMinus size={24} className="mr-2" />
+          Certificate Formats
+        </div>
+      ),
+      description: `Total Certificate Formats: ${certificateFormats}`,
+      disabled: true,
     },
     {
       title: (
@@ -39,8 +59,8 @@ const UserDashboard = () => {
           Institutions
         </div>
       ),
-      description: `Total Institutions: ${user.Institution.length}`,
-      link: "/user/institutes",
+      description: `Total Institutions: ${totalInstitutions}`,
+      link: "/admin/institutes",
       btnText: "View Institutions",
     },
     {
@@ -50,8 +70,8 @@ const UserDashboard = () => {
           Settings
         </div>
       ),
-      description: "Change user settings.",
-      link: "/user/settings",
+      description: "Change settings.",
+      link: "/admin/settings",
       btnText: "Change",
     },
   ];
@@ -59,17 +79,21 @@ const UserDashboard = () => {
     <div className="flex flex-col h-full gap-y-2 mx-6">
       <CustomBreadCrumbs {...breadcrumbItems} />
       <h1 className="text-2xl text-neutral-900 dark:text-neutral-100 font-medium">
-        Welcome <span className="text-indigo-500">{user.name}!!</span>
+        Welcome <span className="text-indigo-500">Admin!!</span>
       </h1>
       <ScrollArea className="h-[90%]">
         <div className="flex flex-col w-full h-full items-start gap-y-4">
           <div className="flex flex-col items-start w-full">
             <span className="text-lg text-indigo-500 mb-2">Quick Actions</span>
-            <div className="flex gap-x-4 w-3/4">
-              {cards.slice(0, 3).map((card, index) => (
+            <div className="flex gap-x-4">
+              {cards.slice(0, 4).map((card, index) => (
                 <CustomCard key={index} {...card} />
               ))}
             </div>
+          </div>
+          <div className="flex flex-col items-start w-full">
+            <span className="text-lg text-indigo-500 mb-2">Analytics</span>
+            <div className="flex gap-x-4"></div>
           </div>
         </div>
       </ScrollArea>
@@ -77,4 +101,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default AdminDashboard;

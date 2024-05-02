@@ -1,6 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import {
+  useWeb3ModalProvider,
+  useWeb3ModalAccount,
+  useDisconnect,
+  useWeb3Modal,
+} from "@web3modal/ethers5/react";
+import { ethers } from "ethers";
 
 //api
 import {
@@ -25,12 +32,15 @@ import Cookies from "js-cookie";
 
 import { useAppContext } from "./AppContext";
 
+import { abi } from "@/constants/abi";
+
 export const InstituteContext = React.createContext();
 
 export const InstituteProvider = ({ children }) => {
   const { setUserType, setIsLoading } = useAppContext();
   const [auth, setAuth] = useState(false);
   const [institute, setInstitute] = useState({
+    id: "",
     name: "",
     code: "",
     email: "",
@@ -42,6 +52,56 @@ export const InstituteProvider = ({ children }) => {
     isApproved: false,
     isEmailVerified: false,
   });
+
+  //web3modal
+  const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { walletProvider } = useWeb3ModalProvider();
+  const { open } = useWeb3Modal();
+  const { disconnect } = useDisconnect();
+
+  const viewWallet = () => open();
+
+  const connectWallet = () => {
+    try {
+      open();
+      toast.success("Wallet connected successfully.");
+    } catch (error) {
+      toast.error("Error connecting wallet.");
+    }
+  };
+  const disconnectWallet = () => {
+    try {
+      disconnect();
+      toast.success("Wallet disconnected successfully.");
+    } catch (error) {
+      toast.error("Error disconnecting wallet.");
+    }
+  };
+
+  const generateCertificateHash = async ({
+    instituteId,
+    userId,
+    certificateFormatId,
+  }) => {
+    if (!isConnected)
+      return toast.error("Connect your wallet to generate certificate");
+
+    const ethersProvider = new ethers.providers.Web3Provider(walletProvider);
+    const signer = ethersProvider.getSigner();
+    const contract = new ethers.Contract(
+      import.meta.env.VITE_CONTRACT_ADDRESS,
+      abi,
+      signer
+    );
+
+    const hashValue = await contract.storeCertificate(
+      instituteId,
+      userId,
+      certificateFormatId
+    );
+
+    return hashValue.hash;
+  };
 
   const navigate = useNavigate();
   const INSTITUTE_DASHBOARD = "/institute";
@@ -75,6 +135,7 @@ export const InstituteProvider = ({ children }) => {
         isApproved: false,
         isEmailVerified: false,
       });
+      setUserType("");
       setIsLoading(false);
     }
   };
@@ -128,7 +189,7 @@ export const InstituteProvider = ({ children }) => {
   //logout
   const handleInstituteLogout = async () => {
     Cookies.remove("token");
-    toast.success("Logged out successfully");
+    disconnectWallet();
     navigate("/", {
       replace: true,
     });
@@ -143,6 +204,7 @@ export const InstituteProvider = ({ children }) => {
       isEmailVerified: false,
     });
     setUserType("");
+    toast.success("Logged out successfully");
   };
 
   //verify email
@@ -301,11 +363,15 @@ export const InstituteProvider = ({ children }) => {
 
   //generate certificate for the user with the selected certificate format
   const handleInstituteGenerateCertificate = async (data) => {
-    //todo: generate certificate hashcode using blockchain
+    const hashValue = await generateCertificateHash({
+      instituteId: institute.id,
+      userId: data.userId,
+      certificateFormatId: data.certificateFormatId,
+    });
     toast.promise(
       apiGenerateCertificate({
         ...data,
-        certificateHashcode: "Will generate using blockchain later",
+        certificateHashcode: hashValue,
       }),
       {
         loading: "Generating Certificate...",
@@ -346,6 +412,14 @@ export const InstituteProvider = ({ children }) => {
         handleInstituteAddUser,
         handleInstituteGenerateCertificate,
         handleInstituteRemoveUser,
+        //web3modal
+        address,
+        chainId,
+        isConnected,
+        walletProvider,
+        connectWallet,
+        disconnectWallet,
+        viewWallet,
       }}
     >
       {children}

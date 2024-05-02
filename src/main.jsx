@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { createWeb3Modal, defaultConfig } from "@web3modal/ethers5/react";
 
 import App from "@/App.jsx";
 import "@/index.css";
@@ -14,6 +15,17 @@ import { InstituteProvider } from "@/context/InstituteContext";
 import { AdminProvider } from "@/context/AdminContext";
 
 import { ScrollToTop } from "@/utils";
+
+import { projectId, metadata, testnet } from "@/config/walletConnectConfig";
+
+createWeb3Modal({
+  ethersConfig: defaultConfig({ metadata }),
+  chains: [testnet],
+  projectId,
+  themeVariables: {
+    "--w3m-font-family": "Space Grotesk",
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

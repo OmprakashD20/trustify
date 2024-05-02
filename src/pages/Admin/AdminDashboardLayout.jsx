@@ -2,39 +2,33 @@ import { Outlet, Navigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { Building2, LayoutDashboard, Settings } from "lucide-react";
-import { PiCertificate } from "react-icons/pi";
 
 import { useAppContext } from "@/context/AppContext";
-import { useUserContext } from "@/context/UserContext";
+import { useAdminContext } from "@/context/AdminContext";
 
 import DashboardNavbar from "@/components/DashboardNavbar/DashboardNavbar";
 import DashboardLoader from "@/components/SkeletonLoader/DashboardLoader";
 
 import { Separator } from "@/components/ui/separator";
 
-const UserDashboardLayout = () => {
+const AdminDashboardLayout = () => {
   const { isLoading } = useAppContext();
-  const { auth } = useUserContext();
+  const { auth, institutions } = useAdminContext();
 
   const links = [
     {
       name: "Dashboard",
-      path: "/user",
+      path: "/admin",
       icon: LayoutDashboard,
     },
     {
-      name: "Certificates",
-      path: "/user/certificates",
-      icon: PiCertificate,
-    },
-    {
       name: "Institution",
-      path: "/user/institutes",
+      path: "/admin/institutes",
       icon: Building2,
     },
     {
       name: "Settings",
-      path: "/institute/settings",
+      path: "/admin/settings",
       icon: Settings,
     },
   ];
@@ -57,4 +51,4 @@ const UserDashboardLayout = () => {
   );
 };
 
-export default UserDashboardLayout;
+export default AdminDashboardLayout;

@@ -74,10 +74,26 @@ const InstituteDashboardLayout = () => {
     return <Navigate to={"/"} replace />;
   }
 
-  if (
-    institute.isApproved !== "APPROVED" ||
-    institute.isApproved === "PENDING"
-  ) {
+  if (institute.isApproved === "REJECTED") {
+    return (
+      <div className="h-[100dvh] flex flex-col items-center justify-center gap-y-4 mx-6">
+        <h2 className="text-neutral-900 dark:text-neutral-100 max-sm:text-center">
+          The Admin has rejected your{" "}
+          <span className="text-indigo-500">institution.</span> We will delete
+          your account in two to four days. Try again after deletion of your
+          account.
+        </h2>
+        <Link
+          to="/"
+          className="px-3 py-1 text-base rounded dark:bg-indigo-600/30 dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300"
+        >
+          Home
+        </Link>
+      </div>
+    );
+  }
+
+  if (institute.isApproved === "PENDING") {
     return (
       <div className="h-[100dvh] flex flex-col items-center justify-center gap-y-4 mx-6">
         <h2 className="text-neutral-900 dark:text-neutral-100 max-sm:text-center">

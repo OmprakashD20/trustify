@@ -8,7 +8,7 @@ import { apiUserLogin } from "@/api";
 import Cookies from "js-cookie";
 
 import { useAppContext } from "./AppContext";
-import { apiUserDetails } from "@/api/user";
+import { apiUserDetails } from "@/api";
 
 export const UserContext = React.createContext();
 
@@ -43,6 +43,15 @@ export const UserProvider = ({ children }) => {
     } else {
       Cookies.remove("token");
       setAuth(false);
+      setUserType("");
+      setUser({
+        id: "",
+        name: "",
+        email: "",
+        phone: "",
+        Certificates: [],
+        Institution: [],
+      });
       setIsLoading(false);
     }
   };

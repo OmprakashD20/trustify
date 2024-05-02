@@ -1,9 +1,4 @@
-import {
-  LayoutTemplate,
-  UserPlus2,
-  Users2,
-  Settings,
-} from "lucide-react";
+import { LayoutTemplate, UserPlus2, Users2, Settings } from "lucide-react";
 import { PiCertificate } from "react-icons/pi";
 import { RiAiGenerate } from "react-icons/ri";
 
@@ -11,10 +6,24 @@ import { useInstituteContext } from "@/context/InstituteContext";
 
 import CustomBreadCrumbs from "@/components/CustomBreadCrumbs/CustomBreadCrumbs";
 import CustomCard from "@/components/CustomCard/CustomCard";
+
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Dashboard = () => {
-  const { institute } = useInstituteContext();
+  const {
+    institute,
+    isConnected,
+    connectWallet,
+    disconnectWallet,
+    viewWallet,
+  } = useInstituteContext();
 
   const breadcrumbItems = {
     previousPages: [
@@ -104,9 +113,38 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col h-full gap-y-2 mx-6">
       <CustomBreadCrumbs {...breadcrumbItems} />
-      <h1 className="text-2xl text-neutral-900 dark:text-neutral-100 font-medium">
-        Welcome <span className="text-indigo-500">{institute.name}!!</span>
-      </h1>
+      <div className="w-full flex items-center justify-between">
+        <h1 className="text-2xl text-neutral-900 dark:text-neutral-100 font-medium">
+          Welcome <span className="text-indigo-500">{institute.name}!!</span>
+        </h1>
+        <div className="flex gap-x-4">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  className="px-4 py-3 text-sm font-medium sm:uppercase rounded dark:bg-indigo-600/30 bg-transparent hover:bg-transparent dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300"
+                  onClick={isConnected ? disconnectWallet : connectWallet}
+                >
+                  {isConnected ? "Disconnect" : "Connect Wallet"}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side={"bottom"}>
+                {isConnected
+                  ? "Click to disconnect your wallet."
+                  : "Connect your wallet to generate certificates."}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {isConnected && (
+            <Button
+              className="px-4 py-3 text-sm font-medium sm:uppercase rounded dark:bg-indigo-600/30 bg-transparent hover:bg-transparent dark:border-indigo-800/40 border-indigo-800/40 border-2 dark:text-gray-50 text-indigo-600 dark:hover:bg-indigo-600/60 transition-colors duration-300"
+              onClick={viewWallet}
+            >
+              View Account
+            </Button>
+          )}
+        </div>
+      </div>
       <ScrollArea className="h-[90%]">
         <div className="flex flex-col w-full h-full items-start gap-y-4">
           <div className="flex flex-col items-start w-full">

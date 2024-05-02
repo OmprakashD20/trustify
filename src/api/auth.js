@@ -8,11 +8,11 @@ export const apiAdminLogin = async (data) => {
   try {
     const response = await api.post(`${url}login/admin`, data);
 
-    const { token, message } = response.data;
+    const { token, message, institutions } = response.data;
 
     Cookies.set("token", token);
 
-    return message;
+    return { message, institutions };
   } catch (error) {
     if (error.response) throw error.response.data.error;
     throw error;
@@ -39,6 +39,7 @@ export const apiInstituteLogin = async (data) => {
     const response = await api.post(`${url}login/institute`, data);
 
     const {
+      id,
       name,
       code,
       email,
@@ -47,6 +48,7 @@ export const apiInstituteLogin = async (data) => {
       templates,
       certificateFormats,
       token,
+      users,
       message,
       isApproved,
       isEmailVerified,
@@ -55,11 +57,13 @@ export const apiInstituteLogin = async (data) => {
     if (isEmailVerified) Cookies.set("token", token);
 
     const institute = {
+      id,
       name,
       code,
       email,
       phone,
       proof,
+      users,
       templates,
       certificateFormats,
       isApproved,
